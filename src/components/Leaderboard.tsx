@@ -7,7 +7,7 @@ const PlayerItem: FC<{
   player: PlayerUser;
 }> = ({ rank, player }) => {
   return (
-    <div className="hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-4 rounded-lg">
+    <div className="hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
       <h1 className={`text-4xl font-bold`}>{rank}.</h1>
       <img
         className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
@@ -16,7 +16,7 @@ const PlayerItem: FC<{
         width={70}
         height={70}
       />
-      <div className="lg:w-72">
+      <div className="flex-1 lg:w-72">
         <h1 className="text-xl font-bold">{player.name}</h1>
         <h1 className="text-sm text-gray-400">{player.description}</h1>
       </div>
