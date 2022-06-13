@@ -7,9 +7,10 @@ import "./index.css";
 import store from "./utils/store";
 import Home from "./views";
 import HallOfFame from "./views/halloffame";
-import Predict from "./views/predict";
+import Predict from "./views/predict/groups";
 import GroupBlock from "./views/predict/group/[id]";
 import Schedule from "./views/schedule";
+import UpdateProfile from "./views/profile/update";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<Home />}>
               <Route index element={<Home />} />
             </Route>
+            <Route path="profile/update" element={<UpdateProfile />} />
             <Route path="predict" element={<Predict />} />
             <Route path="predict/group/:id" element={<GroupBlock />} />
             <Route path="schedule" element={<Schedule />} />

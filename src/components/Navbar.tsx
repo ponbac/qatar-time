@@ -28,7 +28,7 @@ const Navbar: FC<{}> = ({}) => {
 
   return (
     <div className="hidden lg:flex flex-col min-h-screen w-24 bg-gradient-to-l from-primary to-secondary items-center">
-      <Link to={`/user/pontus`}>
+      <Link to={`/profile/update`}>
         <img
           className="mt-6 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
           src={

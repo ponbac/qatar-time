@@ -13,7 +13,7 @@ const SignInButton: React.FC<{}> = ({}) => {
         provider: "discord",
       },
       {
-        redirectTo: `${APP_URL()}/?authStatus=success`,
+        redirectTo: window.location.origin,
       }
     );
 
