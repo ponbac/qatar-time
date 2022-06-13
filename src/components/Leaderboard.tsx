@@ -11,14 +11,14 @@ const PlayerItem: FC<{
       <h1 className={`text-4xl font-bold`}>{rank}.</h1>
       <img
         className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
-        src={player.avatar}
+        src={player.avatar ?? 'https://avatars.dicebear.com/api/big-ears-neutral/randomo.svg'}
         alt={`${player.name} avatar`}
         width={70}
         height={70}
       />
       <div className="flex-1 lg:w-72">
-        <h1 className="text-xl font-bold">{player.name}</h1>
-        <h1 className="text-sm text-gray-400">{player.description}</h1>
+        <h1 className="text-xl font-bold">{player.name ?? 'Unknown'}</h1>
+        <h1 className="text-sm text-gray-400">{player.description ?? 'Who might this be!?'}</h1>
       </div>
       <h1 className="text-3xl font-bold">{player.score}p</h1>
     </div>
