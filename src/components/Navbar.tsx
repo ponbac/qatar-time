@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import TocIcon from "@mui/icons-material/Toc";
@@ -9,9 +9,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser, signedOut } from "../features/auth/authSlice";
 import { SUPABASE } from "../utils/dataFetcher";
 
+enum MenuItem {
+  Home,
+  Predict,
+  Schedule,
+  HallOfFame
+}
+
 const Navbar: FC<{}> = ({}) => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+
+  // TODO: Highlight active menu item
+  const [activeItem, setActiveItem] = useState<MenuItem>();
 
   async function signOut() {
     const { error } = await SUPABASE.auth.signOut();
@@ -44,25 +54,25 @@ const Navbar: FC<{}> = ({}) => {
 
       <Link to="/">
         <div className="mt-12 flex flex-col items-center hover:cursor-pointer hover:italic">
-          <TocIcon className="fill-white w-12 h-12 transition-all hover:w-14 hover:h-14" />
+          <TocIcon className="fill-white w-14 h-14 transition-all " />
           <p className="text-white font-semibold text-sm font-mono">Home</p>
         </div>
       </Link>
       <Link to="/predict">
         <div className="mt-4 flex flex-col items-center hover:cursor-pointer hover:italic">
-          <SportsSoccerIcon className="fill-white w-12 h-12 transition-all hover:w-14 hover:h-14" />
+          <SportsSoccerIcon className="fill-white w-14 h-14 transition-all " />
           <p className="text-white font-semibold text-sm font-mono">Predict</p>
         </div>
       </Link>
       <Link to="/schedule">
         <div className="mt-4 flex flex-col items-center hover:cursor-pointer hover:italic">
-          <ScheduleIcon className="fill-white w-12 h-12 transition-all hover:w-14 hover:h-14" />
+          <ScheduleIcon className="fill-white w-14 h-14 transition-all " />
           <p className="text-white font-semibold text-sm font-mono">Schedule</p>
         </div>
       </Link>
       <Link to="/halloffame">
         <div className="mt-4 flex flex-col items-center hover:cursor-pointer hover:italic">
-          <EmojiEventsIcon className="fill-white w-12 h-12 transition-all hover:w-14 hover:h-14" />
+          <EmojiEventsIcon className="fill-white w-14 h-14 transition-all " />
           <p className="text-white font-semibold text-sm font-mono">HoF</p>
         </div>
       </Link>
@@ -70,7 +80,7 @@ const Navbar: FC<{}> = ({}) => {
         onClick={handleSignOutClick}
         className="absolute bottom-3 mt-4 flex flex-col items-center hover:cursor-pointer hover:italic"
       >
-        <LogoutIcon className="fill-white w-12 h-12 transition-all hover:w-14 hover:h-14" />
+        <LogoutIcon className="fill-white w-14 h-14 transition-all " />
         <p className="text-white font-semibold text-sm font-mono">Logout</p>
       </div>
     </div>

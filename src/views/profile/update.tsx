@@ -8,7 +8,12 @@ const UpdateProfile: FC<{}> = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAvatarClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    e.preventDefault();
+    console.log('Avatar clicked!')
+  };
+
+  const handleUpdateClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     let name = document.getElementById("nameField")?.innerHTML;
     let desc = document.getElementById("descField")?.innerHTML;
@@ -53,13 +58,14 @@ const UpdateProfile: FC<{}> = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col items-center justify-center font-mono bg-gray-500/70 backdrop-blur-sm rounded-lg p-10 w-80 h-80 overflow-hidden">
+      <div className="flex flex-col items-center justify-center font-mono bg-gray-500/70 backdrop-blur-sm rounded-xl p-10 w-80 h-80 overflow-hidden">
         <img
-          className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
+          className="rounded-full p-1 ring-2 hover:ring-8 hover:cursor-pointer transition-all ring-primary"
           src={user.avatar}
           alt={`${user.name} avatar`}
           width={120}
           height={120}
+          onClick={handleAvatarClick}
         />
         <div className="my-4">
           <h1 id="nameField" className="text-xl font-bold text-center" contentEditable>
@@ -69,9 +75,9 @@ const UpdateProfile: FC<{}> = () => {
             {user.description}
           </h1>
         </div>
-        <button onClick={handleClick}>
+        <button onClick={handleUpdateClick}>
           <div className="hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
-            Update Info
+            Save
           </div>
         </button>
       </div>
