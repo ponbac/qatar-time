@@ -5,7 +5,16 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#6A67CE",
+        secondary: "#B689C0",
+        white: "#FFFFFF",
+      },
+      fontFamily: {
+        novaMono: ["Nova Mono", "sans-serif"],
+      }
+    },
   },
   plugins: [],
 }
