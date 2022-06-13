@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, ThunkAction } from "@reduxjs/toolkit";
 import { User } from "@supabase/supabase-js";
-import { AppState } from "../../utils/store";
+import { fetchUser, updateUserData } from "../../utils/dataFetcher";
+import { AppState, AppThunk } from "../../utils/store";
 
-const initialAuthState: { isAuthenticated: boolean; user: User | null } = {
-  isAuthenticated: false,
-  user: null,
-};
+const initialAuthState: { isAuthenticated: boolean; user: PlayerUser | null } =
+  {
+    isAuthenticated: false,
+    user: null,
+  };
 
 export const authSlice = createSlice({
   name: "auth",
@@ -32,8 +34,28 @@ export const authSlice = createSlice({
   extraReducers: {},
 });
 
-export default authSlice.reducer;
+export const login =
+  (user: User): AppThunk =>
+  async (dispatch) => {
+    const playerUser = fetchUser(user.id).then((playerUser) => {
+      if (playerUser.name == null) {
+        updateUserData(
+          user.id,
+          user.user_metadata.full_name,
+          user.user_metadata.avatar_url,
+          "No cool description yet!"
+        );
 
+        playerUser.name = user.user_metadata.full_name;
+        playerUser.avatar = user.user_metadata.avatar_url;
+        playerUser.description = "No cool description yet!";
+      }
+
+      dispatch(signedIn(playerUser));
+    });
+  };
+
+export default authSlice.reducer;
 export const { signedIn, signedOut } = authSlice.actions;
 
 export const selectAuthState = (state: AppState) => state.auth;

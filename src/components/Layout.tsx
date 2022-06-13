@@ -1,24 +1,12 @@
 import { motion } from "framer-motion";
 import { FC, ReactNode, useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Navbar from "./Navbar";
-import {
-  fetchUserData,
-  isLoggedIn,
-  SUPABASE,
-  updateUserData,
-} from "../utils/dataFetcher";
-import { SessionInfoButton, SignInButton, SignOutButton } from "./auth/Buttons";
+import { fetchUser, SUPABASE, updateUserData } from "../utils/dataFetcher";
+import { SignInButton } from "./auth/Buttons";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectAuthState,
-  signedIn,
-  signedOut,
-} from "../features/auth/authSlice";
-import { sleep } from "../utils/utils";
-import { User } from "@supabase/supabase-js";
-import { APP_URL } from "../utils/constants";
+import { login, selectAuthState, signedIn, signedOut } from "../features/auth/authSlice";
+import { useAppDispatch } from "../utils/store";
 
 const Head: FC<{}> = () => {
   return (
@@ -39,44 +27,40 @@ const Head: FC<{}> = () => {
 };
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
-  // const [searchParams] = useSearchParams();
-  // const authStatus = searchParams.get("authStatus");
-
   const [introVisible, setIntroVisible] = useState(true);
   const introDuration: number = 3.0;
 
   const authState = useSelector(selectAuthState);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const authIdToPlayerUser = async (authId: string) => {
-    const playerUser = await fetchUserData(authId);
+    const playerUser = await fetchUser(authId);
     return playerUser;
   };
 
   useEffect(() => {
-    // if (authStatus == "success") {
-    //   let navigate = useNavigate();
-    //   navigate(`${APP_URL()}`);
-    // }
+    // Check active sessions and sets the user
+    const session = SUPABASE.auth.session()
 
-    function listenForStorage() {
-      const item = localStorage.getItem("supabase.auth.token");
-      if (item) {
-        const user = SUPABASE.auth.user();
-        if (user) {
-          dispatch(signedIn(user));
-        }
-      } else {
-        dispatch(signedOut());
-      }
+    if (session?.user) {
+      dispatch(login(session.user));
     }
-    listenForStorage();
-    window.addEventListener("storage", listenForStorage);
+
+    // Listen for changes on auth state (logged in, signed out, etc.)
+    const { data: listener } = SUPABASE.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          dispatch(login(session.user));
+        } else {
+          dispatch(signedOut())
+        }
+      }
+    )
 
     return () => {
-      window.removeEventListener("storage", listenForStorage);
-    };
-  }, [dispatch]);
+      listener?.unsubscribe()
+    }
+  }, [])
 
   useEffect(() => {
     if (authState.isAuthenticated) {
@@ -84,15 +68,22 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       if (authUser) {
         authIdToPlayerUser(authUser.id).then((playerUser) => {
           if (playerUser.name == null) {
-            updateUserData(
-              authUser.id,
-              authUser.user_metadata.full_name,
-              authUser.user_metadata.avatar_url,
-              "No cool description yet!"
-            );
+            // updateUserData(
+            //   authUser.id,
+            //   authUser.user_metadata.full_name,
+            //   authUser.user_metadata.avatar_url,
+            //   "No cool description yet!"
+            // );
 
             console.log(playerUser);
           }
+        });
+      }
+    } else {
+      const user = SUPABASE.auth.user();
+      if (user) {
+        authIdToPlayerUser(user.id).then((playerUser) => {
+          dispatch(signedIn(playerUser));
         });
       }
     }

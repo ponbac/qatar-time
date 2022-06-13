@@ -11,18 +11,16 @@ import HallOfFame from "./views/halloffame";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <Layout>
-        {/* <BrowserRouter>
+      <BrowserRouter>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />}>
               <Route index element={<Home />} />
-              <Route path="halloffame" element={<HallOfFame />}>
-              </Route>
+              <Route path="halloffame" element={<HallOfFame />}></Route>
             </Route>
           </Routes>
-        </BrowserRouter> */}
-        <Home />
-      </Layout>
+        </Layout>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

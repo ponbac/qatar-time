@@ -33,7 +33,7 @@ const Navbar: FC<{}> = ({}) => {
           className="mt-6 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
           src={
             user
-              ? user.user_metadata.avatar_url
+              ? user.avatar
               : "https://avatars.dicebear.com/api/big-ears-neutral/Bakuman.svg"
           }
           alt={`Avatar`}

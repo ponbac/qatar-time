@@ -73,17 +73,25 @@ const isLoggedIn = (): boolean => {
   return user ? true : false;
 };
 
-const fetchUserData = async (userId: string): Promise<PlayerUser> => {
-  const response = await fetch(`${API_URL}/users?id=${userId}`);
-  const data = await response.json();
-  return data;
+const fetchUser = async (userId: string): Promise<any> => {
+  const { data, error } = await SUPABASE.from("users")
+    .select()
+    .eq("id", userId);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data[0];
 };
 
-const fetchAllUsers = async (): Promise<any[]> => {
-  const response = await fetch(`${API_URL}/users`);
-  const data = await response.json();
+const fetchAllUsers = async (): Promise<any> => {
+  const { data, error } = await SUPABASE.from("users").select();
+  if (error) {
+    throw new Error(error.message);
+  }
+
   return data;
-}
+};
 
 const updateUserData = async (
   userId: string,
@@ -108,8 +116,8 @@ export {
   useGroups,
   useGames,
   getCurrentUser,
-  fetchUserData,
+  fetchUser,
   fetchAllUsers,
   updateUserData,
-  isLoggedIn
+  isLoggedIn,
 };

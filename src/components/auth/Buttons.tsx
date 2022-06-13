@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux";
-import { signedIn, signedOut } from "../../features/auth/authSlice";
+import { login, signedIn, signedOut } from "../../features/auth/authSlice";
 import { APP_URL } from "../../utils/constants";
 import { SUPABASE, updateUserData } from "../../utils/dataFetcher";
+import { useAppDispatch } from "../../utils/store";
 
 const SignInButton: React.FC<{}> = ({}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   async function signInWithDiscord() {
     const { user, session, error } = await SUPABASE.auth.signIn(
@@ -16,7 +17,14 @@ const SignInButton: React.FC<{}> = ({}) => {
       }
     );
 
-    dispatch(signedIn(user));
+    console.log(user);
+    console.log(session);
+    console.log(error);
+
+    if (user) {
+      console.log(user);
+      dispatch(login(user));
+    }
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
