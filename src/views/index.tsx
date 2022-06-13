@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { FC } from "react";
-import { SessionInfoButton, SignInButton, SignOutButton } from "../components/auth/Buttons";
 import Header from "../components/Header";
 import Leaderboard from "../components/Leaderboard";
 
@@ -16,7 +15,6 @@ const Home: FC<{}> = () => {
       <div className="flex flex-col flex-0 justify-center items-center pt-20">
         <Leaderboard />
       </div>
-      <SessionInfoButton />
     </motion.div>
   );
 };

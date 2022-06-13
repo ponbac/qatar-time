@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 import React, { FC, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -65,8 +65,8 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
 };
 
 const GroupBlock: FC<{}> = ({}) => {
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  let params = useParams();
+  const id = params.id;
 
   const [group, setGroup] = useState<Group>();
   const [isLoading, setIsLoading] = useState(true);

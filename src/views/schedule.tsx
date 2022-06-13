@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import moment from "moment";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import TeamFlag from "../components/TeamFlag";
-import { useGames } from "../utils/dataFetcher";
+import { fetchGames } from "../utils/dataFetcher";
 
 const TeamBlock: FC<{
   team: Team;
@@ -42,7 +42,17 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
 };
 
 const Schedule: FC<{}> = ({}) => {
-  const { games, isLoading, isError } = useGames();
+  //const { games, isLoading, isError } = useGames();
+  const [games, setGames] = useState<Game[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchGames().then((g) => {
+      setGames(g);
+      setIsLoading(false);
+    });
+  }, []);
 
   if (isLoading) {
     return (

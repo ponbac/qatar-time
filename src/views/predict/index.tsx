@@ -1,10 +1,21 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReorderableGroup from "../../components/ReorderableGroup";
-import { useGroups } from "../../utils/dataFetcher";
+import { fetchGroups } from "../../utils/dataFetcher";
 
 const Predict: React.FC<{}> = () => {
-  const { groups, isLoading, isError } = useGroups();
+  //const { groups, isLoading, isError } = useGroups();
+  const [groups, setGroups] = useState<Group[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchGroups().then((g) => {
+      setGroups(g);
+      setIsLoading(false);
+    });
+  }, []);
 
   if (isLoading) {
     return (

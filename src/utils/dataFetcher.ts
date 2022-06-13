@@ -14,20 +14,66 @@ const SUPABASE = createClient(
 );
 const FETCHER = (url: RequestInfo) => fetch(url).then((r) => r.json());
 
-const useGroups = (): {
-  groups: Group[] | undefined;
-  isLoading: boolean;
-  isError: Error;
-} => {
-  const { data, error } = useSWR<Group[]>("/api/groups", FETCHER);
+// const useGroups = (): {
+//   groups: Group[] | undefined;
+//   isLoading: boolean;
+//   isError: Error;
+// } => {
+//   const { data, error } = useSWR<Group[]>("/api/groups", FETCHER);
 
-  return { groups: data, isLoading: !error && !data, isError: error };
+//   return { groups: data, isLoading: !error && !data, isError: error };
+// };
+
+const fetchGroups = async (): Promise<Group[]> => {
+  const groupNames = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  let groups: Group[] = [];
+
+  await Promise.all(
+    groupNames.map(async (groupName) => {
+      const g = await fetchGroup(groupName);
+      groups.push(g);
+    })
+  );
+
+  return groups.sort((a, b) => a.id.localeCompare(b.id));
 };
 
 const fetchGroup = async (groupId: string): Promise<Group> => {
-  const response = await fetch(`${API_URL}/groups?id=${groupId}`);
-  const data = await response.json();
-  return data;
+  let group: Group = {
+    id: groupId.toUpperCase(),
+    teams: [],
+    games: [],
+  };
+
+  // TODO: Don't fetch teams here, still fetches them multiple times from the games...
+  const { data: teams, error: teamsError } = await SUPABASE.from("teams")
+    .select()
+    .eq("groupId", groupId.toUpperCase());
+  if (teamsError) {
+    throw new Error(teamsError.message);
+  }
+  group.teams = teams;
+
+  const { data: games, error: gamesError } = await SUPABASE.from("games")
+    .select(
+      `
+    id,
+    finished,
+    homeGoals,
+    awayGoals,
+    homeTeam: homeTeam ( id, name, flagCode, groupId ),
+    awayTeam: awayTeam ( id, name, flagCode, groupId ),
+    date,
+    groupId
+    `
+    )
+    .eq("groupId", groupId.toUpperCase());
+  if (gamesError) {
+    throw new Error(gamesError.message);
+  }
+  group.games = games;
+
+  return group;
 };
 
 const fetchAllTeams = async (): Promise<Team[]> => {
@@ -51,14 +97,35 @@ const fetchTeam = async (teamId?: string, teamName?: string): Promise<Team> => {
   return data;
 };
 
-const useGames = (): {
-  games: Game[] | undefined;
-  isLoading: boolean;
-  isError: Error;
-} => {
-  const { data, error } = useSWR<Game[]>("/api/games", FETCHER);
+// const useGames = (): {
+//   games: Game[] | undefined;
+//   isLoading: boolean;
+//   isError: Error;
+// } => {
+//   const { data, error } = useSWR<Game[]>("/api/games", FETCHER);
 
-  return { games: data, isLoading: !error && !data, isError: error };
+//   return { games: data, isLoading: !error && !data, isError: error };
+// };
+
+const fetchGames = async (): Promise<Game[]> => {
+  const { data, error } = await SUPABASE.from("games")
+    .select(
+      `
+    id,
+    finished,
+    homeGoals,
+    awayGoals,
+    homeTeam: homeTeam ( id, name, flagCode, groupId ),
+    awayTeam: awayTeam ( id, name, flagCode, groupId ),
+    date,
+    groupId
+    `
+    )
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
 
 const getCurrentUser = (): User | null => {
@@ -113,8 +180,8 @@ const updateUserData = async (
 export {
   SUPABASE,
   fetchGroup,
-  useGroups,
-  useGames,
+  fetchGroups,
+  fetchGames,
   getCurrentUser,
   fetchUser,
   fetchAllUsers,
