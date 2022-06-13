@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchAllUsers } from "../utils/dataFetcher";
 
 const PlayerItem: FC<{
@@ -7,21 +8,28 @@ const PlayerItem: FC<{
   player: PlayerUser;
 }> = ({ rank, player }) => {
   return (
-    <div className="hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
-      <h1 className={`text-4xl font-bold`}>{rank}.</h1>
-      <img
-        className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
-        src={player.avatar ?? 'https://avatars.dicebear.com/api/big-ears-neutral/randomo.svg'}
-        alt={`${player.name} avatar`}
-        width={70}
-        height={70}
-      />
-      <div className="flex-1 lg:w-72">
-        <h1 className="text-xl font-bold">{player.name ?? 'Unknown'}</h1>
-        <h1 className="text-sm text-gray-400">{player.description ?? 'Who might this be!?'}</h1>
+    <Link to={`/profile/${player.id}`}>
+      <div className="mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
+        <h1 className={`text-4xl font-bold`}>{rank}.</h1>
+        <img
+          className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
+          src={
+            player.avatar ??
+            "https://avatars.dicebear.com/api/big-ears-neutral/randomo.svg"
+          }
+          alt={`${player.name} avatar`}
+          width={70}
+          height={70}
+        />
+        <div className="flex-1 lg:w-72">
+          <h1 className="text-xl font-bold">{player.name ?? "Unknown"}</h1>
+          <h1 className="text-sm text-gray-400">
+            {player.description ?? "Who might this be!?"}
+          </h1>
+        </div>
+        <h1 className="text-3xl font-bold">{player.score}p</h1>
       </div>
-      <h1 className="text-3xl font-bold">{player.score}p</h1>
-    </div>
+    </Link>
   );
 };
 

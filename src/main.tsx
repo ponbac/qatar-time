@@ -8,9 +8,10 @@ import store from "./utils/store";
 import Home from "./views";
 import HallOfFame from "./views/halloffame";
 import Predict from "./views/predict/groups";
-import GroupBlock from "./views/predict/group/[id]";
+import GroupBlock from "./views/predict/group/[groupId]";
 import Schedule from "./views/schedule";
 import UpdateProfile from "./views/profile/update";
+import UserProfile from "./views/profile/[user]";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route index element={<Home />} />
             </Route>
             <Route path="profile/update" element={<UpdateProfile />} />
+            <Route path="profile/:id" element={<UserProfile />} />
             <Route path="predict" element={<Predict />} />
             <Route path="predict/group/:id" element={<GroupBlock />} />
             <Route path="schedule" element={<Schedule />} />

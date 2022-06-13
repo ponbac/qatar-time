@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 import React, { FC, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import TeamFlag from "../../../components/TeamFlag";
 import { fetchGroup } from "../../../utils/dataFetcher";
 
