@@ -13,10 +13,12 @@ import {
 } from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
 
-const Head: FC<{}> = () => {
+const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
   return (
     <Helmet>
-      <title>Backman - [Qatar 2022]</title>
+      <title>
+        {user ? `[${user.name} - ${user.score}p]` : "Backman - [Qatar 2022]"}
+      </title>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
         rel="preconnect"
@@ -102,7 +104,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           className="min-h-screen flex flex-col items-center justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 1.5 }}
         >
           <SignInButton />
         </motion.div>
@@ -112,7 +114,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <Head />
+      <Head user={authState.user ?? undefined} />
       <div className="min-h-screen flex flex-col">
         {introVisible && (
           <motion.div
