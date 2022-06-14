@@ -40,7 +40,7 @@ const Navbar: FC<{}> = ({}) => {
     <div className="hidden lg:flex flex-col min-h-screen w-24 bg-gradient-to-l from-primary to-secondary items-center">
       <Link to={`/profile/update`}>
         <img
-          className="mt-6 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
+          className="object-cover h-16 w-16 mt-6 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
           src={
             user
               ? user.avatar

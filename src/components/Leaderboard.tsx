@@ -12,7 +12,7 @@ const PlayerItem: FC<{
       <div className="mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
         <h1 className={`text-4xl font-bold`}>{rank}.</h1>
         <img
-          className="rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary"
+          className="object-cover rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary w-16 h-16"
           src={
             player.avatar ??
             "https://avatars.dicebear.com/api/big-ears-neutral/randomo.svg"

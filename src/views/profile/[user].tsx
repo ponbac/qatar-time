@@ -48,7 +48,7 @@ const UserProfile: FC<{}> = ({}) => {
       >
         <div className="flex flex-col items-center justify-center font-mono bg-gray-500/70 backdrop-blur-sm rounded-xl p-10 w-80 h-80 overflow-hidden">
           <img
-            className="rounded-full p-1 ring-2 hover:ring-8 transition-all ring-primary"
+            className="object-cover h-32 w-32 rounded-full p-1 ring-2 hover:ring-8 transition-all ring-primary"
             src={
               user.avatar ??
               "https://avatars.dicebear.com/api/big-ears-neutral/randomo.svg"
