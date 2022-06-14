@@ -7,10 +7,25 @@ const PlayerItem: FC<{
   rank: number;
   player: PlayerUser;
 }> = ({ rank, player }) => {
+  const rankColor = (rank: number): string => {
+    switch (rank) {
+      case 1:
+        return "text-[#C9B037]";
+      case 2:
+        return "text-[#B4B4B4]";
+      case 3:
+        return "text-[#AD8A56]";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Link to={`/profile/${player.id}`}>
       <div className="mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
-        <h1 className={`text-4xl font-bold`}>{rank}.</h1>
+        <h1 className={`text-4xl font-bold`}>
+          <span className={rankColor(rank)}>{rank}</span>.
+        </h1>
         <img
           className="object-cover rounded-full p-1 ring-2 hover:ring-4 transition-all ring-primary w-16 h-16"
           src={
