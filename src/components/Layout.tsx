@@ -5,7 +5,12 @@ import Navbar from "./Navbar";
 import { fetchUser, SUPABASE, updateUserData } from "../utils/dataFetcher";
 import { SignInButton } from "./auth/Buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectAuthState, signedIn, signedOut } from "../features/auth/authSlice";
+import {
+  login,
+  selectAuthState,
+  signedIn,
+  signedOut,
+} from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
 
 const Head: FC<{}> = () => {
@@ -40,7 +45,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     // Check active sessions and sets the user
-    const session = SUPABASE.auth.session()
+    const session = SUPABASE.auth.session();
 
     if (session?.user) {
       dispatch(login(session.user));
@@ -52,15 +57,15 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         if (session?.user) {
           dispatch(login(session.user));
         } else {
-          dispatch(signedOut())
+          dispatch(signedOut());
         }
       }
-    )
+    );
 
     return () => {
-      listener?.unsubscribe()
-    }
-  }, [])
+      listener?.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (authState.isAuthenticated) {
@@ -93,9 +98,14 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
       <>
         <Head />
-        <div className="min-h-screen flex flex-col items-center justify-center">
+        <motion.div
+          className="min-h-screen flex flex-col items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <SignInButton />
-        </div>
+        </motion.div>
       </>
     );
   }
