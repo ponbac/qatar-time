@@ -16,7 +16,7 @@ import { useAppDispatch } from "../utils/store";
 const Head: FC<{}> = () => {
   return (
     <Helmet>
-      <title>Backman - Qatar 2022</title>
+      <title>Backman - [Qatar 2022]</title>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
         rel="preconnect"
