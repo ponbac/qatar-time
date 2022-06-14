@@ -3,7 +3,7 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "./Navbar";
 import { fetchUser, SUPABASE, updateUserData } from "../utils/dataFetcher";
-import { SignInButton } from "./auth/Buttons";
+import { SignInButton, SignInProvider } from "./auth/Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   login,
@@ -106,7 +106,11 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
         >
-          <SignInButton />
+          <div className="flex flex-col space-y-3 w-80 items-center font-mono bg-gray-600/70 backdrop-blur-sm rounded-xl p-10">
+            <h1 className="font-mono font-bold text-3xl mb-2">Sign in with</h1>
+            <SignInButton provider={SignInProvider.Discord} text="Discord" />
+            <SignInButton provider={SignInProvider.Facebook} text="Facebook" />
+          </div>
         </motion.div>
       </>
     );

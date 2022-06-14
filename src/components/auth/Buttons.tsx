@@ -4,13 +4,20 @@ import { APP_URL } from "../../utils/constants";
 import { SUPABASE, updateUserData } from "../../utils/dataFetcher";
 import { useAppDispatch } from "../../utils/store";
 
-const SignInButton: React.FC<{}> = ({}) => {
+export enum SignInProvider {
+  Facebook = "facebook",
+  Discord = "discord",
+}
+const SignInButton: React.FC<{ provider: SignInProvider; text: string }> = ({
+  provider,
+  text,
+}) => {
   const dispatch = useAppDispatch();
 
   async function signInWithDiscord() {
     const { user, session, error } = await SUPABASE.auth.signIn(
       {
-        provider: "discord",
+        provider: provider,
       },
       {
         redirectTo: window.location.origin,
@@ -32,10 +39,19 @@ const SignInButton: React.FC<{}> = ({}) => {
     signInWithDiscord();
   };
 
+  const backgroundStyle =
+    provider == SignInProvider.Discord
+      ? "bg-gradient-to-r from-[#6A5ACD] to-[#4B0082]"
+      : "bg-gradient-to-r from-[#4267B2] to-[#898F9C]";
   return (
     <button onClick={handleClick}>
-      <div className="mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-44 hover:w-48 hover:text-gray-400 p-2 rounded-xl font-bold">
-        Sign in with Discord
+      <div
+        className={
+          "hover:cursor-pointer text-center  text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold" +
+          ` ${backgroundStyle}`
+        }
+      >
+        {text}
       </div>
     </button>
   );
