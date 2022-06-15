@@ -12,7 +12,6 @@ import {
   signedOut,
 } from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
-import ResponsiveNavbar from "./ResponsiveNavbar";
 
 const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
   return (
@@ -144,13 +143,12 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           initial={{ y: 0, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: introDuration }}
-          className="min-h-screen flex flex-row"
+          className="min-h-screen flex flex-col lg:flex-row"
         >
-          <div className="fixed">
+          <div className="fixed min-w-full">
             <Navbar />
-            <ResponsiveNavbar />
           </div>
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 lg:ml-24 pt-16 lg:pt-0">
             <main>{children}</main>
           </div>
         </motion.div>

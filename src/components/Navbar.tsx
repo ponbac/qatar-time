@@ -8,15 +8,17 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, signedOut } from "../features/auth/authSlice";
 import { SUPABASE } from "../utils/dataFetcher";
+import { useWindowDimensions } from "../utils/utils";
 
 enum MenuItem {
   Home,
   Predict,
   Schedule,
-  HallOfFame
+  HallOfFame,
 }
 
 const Navbar: FC<{}> = ({}) => {
+  const { height, width } = useWindowDimensions();
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -36,8 +38,58 @@ const Navbar: FC<{}> = ({}) => {
     signOut();
   };
 
+  if (width <= 1024) {
+    return (
+      <div className="items-center flex flex-row min-w-full bg-slate-600 h-16 z-10 px-3">
+        <Link to={`/profile/update`}>
+          <img
+            className="object-cover h-12 w-12 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
+            src={
+              user
+                ? user.avatar
+                : "https://avatars.dicebear.com/api/big-ears-neutral/Bakuman.svg"
+            }
+            alt={`Avatar`}
+            width={60}
+            height={60}
+          />
+        </Link>
+        <div className="flex flex-row flex-1 gap-10 justify-center">
+          <Link to="/">
+            <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
+              <TocIcon className="fill-white w-14 h-14 transition-all " />
+            </div>
+          </Link>
+          <Link to="/predict">
+            <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
+              <SportsSoccerIcon className="fill-white w-14 h-14 transition-all " />
+              
+            </div>
+          </Link>
+          <Link to="/schedule">
+            <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
+              <ScheduleIcon className="fill-white w-14 h-14 transition-all " />
+              
+            </div>
+          </Link>
+          <Link to="/halloffame">
+            <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
+              <EmojiEventsIcon className="fill-white w-14 h-14 transition-all " />
+            </div>
+          </Link>
+          <div
+            onClick={handleSignOutClick}
+            className="flex flex-col items-center hover:cursor-pointer hover:italic"
+          >
+            <LogoutIcon className="fill-white w-14 h-14 transition-all " />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="hidden lg:flex flex-col min-h-screen w-24 bg-gradient-to-l from-primary to-secondary items-center">
+    <div className="flex flex-col min-h-screen w-24 bg-gradient-to-l from-primary to-secondary items-center">
       <Link to={`/profile/update`}>
         <img
           className="object-cover h-16 w-16 mt-6 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"
