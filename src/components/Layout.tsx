@@ -12,6 +12,7 @@ import {
   signedOut,
 } from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
+import ResponsiveNavbar from "./ResponsiveNavbar";
 
 const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
   return (
@@ -147,6 +148,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         >
           <div className="fixed">
             <Navbar />
+            <ResponsiveNavbar />
           </div>
           <div className="flex flex-col flex-1">
             <main>{children}</main>
