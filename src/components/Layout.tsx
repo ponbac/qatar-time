@@ -145,10 +145,10 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           transition={{ duration: 0.5, delay: introDuration }}
           className="min-h-screen flex flex-col lg:flex-row"
         >
-          <div className="fixed min-w-full">
+          <div className="fixed min-w-full z-10">
             <Navbar />
           </div>
-          <div className="flex flex-col flex-1 lg:ml-24 pt-16 lg:pt-0 -z-10">
+          <div className="flex flex-col flex-1 lg:ml-24 pt-16 lg:pt-0 ">
             <main>{children}</main>
           </div>
         </motion.div>
