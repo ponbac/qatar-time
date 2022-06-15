@@ -38,9 +38,9 @@ const PlayerItem: FC<{
         />
         <div className="flex-1 lg:w-72">
           <h1 className="text-xl font-bold">{player.name ?? "Unknown"}</h1>
-          <h1 className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
             {player.description ?? "Who might this be!?"}
-          </h1>
+          </p>
         </div>
         <h1 className="text-3xl font-bold">{player.score}p</h1>
       </div>
