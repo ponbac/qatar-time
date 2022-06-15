@@ -54,29 +54,29 @@ const Navbar: FC<{}> = ({}) => {
             height={60}
           />
         </Link>
-        <div className="flex flex-row flex-1 gap-6 justify-center">
+        <div className="flex flex-row flex-1 gap-6 justify-evenly pl-3">
           <Link to="/">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <HomeIcon className="fill-white w-14 h-14 transition-all " />
-              <p className="text-xs">Home</p>
+              <p className="text-xs font-mono font-bold">Home</p>
             </div>
           </Link>
           <Link to="/predict">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <SportsSoccerIcon className="fill-white w-14 h-14 transition-all " />
-              <p className="text-xs">Predict</p>
+              <p className="text-xs font-mono font-bold">Predict</p>
             </div>
           </Link>
           <Link to="/schedule">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <ScheduleIcon className="fill-white w-14 h-14 transition-all " />
-              <p className="text-xs">Schedule</p>
+              <p className="text-xs font-mono font-bold">Schedule</p>
             </div>
           </Link>
           <Link to="/halloffame">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <EmojiEventsIcon className="fill-white w-14 h-14 transition-all " />
-              <p className="text-xs">HoF</p>
+              <p className="text-xs font-mono font-bold">HoF</p>
             </div>
           </Link>
           <div
@@ -84,7 +84,7 @@ const Navbar: FC<{}> = ({}) => {
             className="flex flex-col items-center hover:cursor-pointer hover:italic"
           >
             <LogoutIcon className="fill-white w-14 h-14 transition-all " />
-            <p className="text-xs">Exit</p>
+            <p className="text-xs font-mono font-bold">Exit</p>
           </div>
         </div>
       </div>
