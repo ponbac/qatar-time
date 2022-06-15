@@ -19,9 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />}>
-              <Route index element={<Home />} />
-            </Route>
+            <Route path="/" element={<Home />} />
             <Route path="profile/update" element={<UpdateProfile />} />
             <Route path="profile/:id" element={<UserProfile />} />
             <Route path="predict" element={<Predict />} />
