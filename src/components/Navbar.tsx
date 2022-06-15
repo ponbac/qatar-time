@@ -54,7 +54,7 @@ const Navbar: FC<{}> = ({}) => {
             height={60}
           />
         </Link>
-        <div className="flex flex-row flex-1 gap-8 justify-center">
+        <div className="flex flex-row flex-1 gap-6 justify-center">
           <Link to="/">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <HomeIcon className="fill-white w-14 h-14 transition-all " />
