@@ -40,7 +40,7 @@ const Navbar: FC<{}> = ({}) => {
 
   if (width <= 1024) {
     return (
-      <div className="items-center flex flex-row min-w-full bg-slate-600 h-16 z-10 px-3">
+      <div className="items-center flex flex-row min-w-full bg-gradient-to-r from-primary to-secondary h-16 z-10 px-3">
         <Link to={`/profile/update`}>
           <img
             className="object-cover h-12 w-12 rounded-full p-1 ring-2 ring-secondary transition-all hover:cursor-pointer hover:ring-4"

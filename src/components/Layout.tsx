@@ -148,7 +148,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="fixed min-w-full">
             <Navbar />
           </div>
-          <div className="flex flex-col flex-1 lg:ml-24 pt-16 lg:pt-0">
+          <div className="flex flex-col flex-1 lg:ml-24 pt-16 lg:pt-0 -z-10">
             <main>{children}</main>
           </div>
         </motion.div>
