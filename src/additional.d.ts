@@ -9,6 +9,7 @@ type Team = {
     name: string;
     flagCode: string;
     groupId: string;
+    points: number;
 }
 
 type Game = {
