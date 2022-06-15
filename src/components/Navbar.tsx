@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import ScheduleIcon from "@mui/icons-material/Schedule";
-import TocIcon from "@mui/icons-material/Toc";
+import HomeIcon from "@mui/icons-material/Home";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
@@ -54,27 +54,29 @@ const Navbar: FC<{}> = ({}) => {
             height={60}
           />
         </Link>
-        <div className="flex flex-row flex-1 gap-10 justify-center">
+        <div className="flex flex-row flex-1 gap-8 justify-center">
           <Link to="/">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
-              <TocIcon className="fill-white w-14 h-14 transition-all " />
+              <HomeIcon className="fill-white w-14 h-14 transition-all " />
+              <p className="text-xs">Home</p>
             </div>
           </Link>
           <Link to="/predict">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <SportsSoccerIcon className="fill-white w-14 h-14 transition-all " />
-              
+              <p className="text-xs">Predict</p>
             </div>
           </Link>
           <Link to="/schedule">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <ScheduleIcon className="fill-white w-14 h-14 transition-all " />
-              
+              <p className="text-xs">Schedule</p>
             </div>
           </Link>
           <Link to="/halloffame">
             <div className="flex flex-col items-center hover:cursor-pointer hover:italic">
               <EmojiEventsIcon className="fill-white w-14 h-14 transition-all " />
+              <p className="text-xs">HoF</p>
             </div>
           </Link>
           <div
@@ -82,6 +84,7 @@ const Navbar: FC<{}> = ({}) => {
             className="flex flex-col items-center hover:cursor-pointer hover:italic"
           >
             <LogoutIcon className="fill-white w-14 h-14 transition-all " />
+            <p className="text-xs">Exit</p>
           </div>
         </div>
       </div>
@@ -106,7 +109,7 @@ const Navbar: FC<{}> = ({}) => {
 
       <Link to="/">
         <div className="mt-12 flex flex-col items-center hover:cursor-pointer hover:italic">
-          <TocIcon className="fill-white w-14 h-14 transition-all " />
+          <HomeIcon className="fill-white w-14 h-14 transition-all " />
           <p className="text-white font-semibold text-sm font-mono">Home</p>
         </div>
       </Link>
