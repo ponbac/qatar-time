@@ -7,6 +7,7 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { Action } from "redux";
 import { authSlice, signedIn } from "../features/auth/authSlice";
+import { predictSlice } from "../features/predict/predictSlice";
 
 export const subjectSlice = createSlice({
   name: "subject",
@@ -29,6 +30,7 @@ const makeStore = () =>
     reducer: {
       [subjectSlice.name]: subjectSlice.reducer,
       [authSlice.name]: authSlice.reducer,
+      [predictSlice.name]: predictSlice.reducer,
     },
     devTools: true,
   });
