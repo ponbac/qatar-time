@@ -22,7 +22,7 @@ export const predictSlice = createSlice({
 
   reducers: {
     predictGroup(state, action) {
-      const groupId = action.payload.groupId;
+      const groupId = action.payload.groupId.toUpperCase();
       const teams = action.payload.prediction;
 
       const groupIndex = state.predictions.findIndex(
@@ -43,8 +43,7 @@ export const predictSlice = createSlice({
       }
     },
     predictGame(state, action) {
-      const groupId = action.payload.groupId;
-      const gameId = action.payload.gameId;
+      const groupId = action.payload.groupId.toUpperCase();
       const gamePrediction = action.payload.gamePrediction;
 
       const groupIndex = state.predictions.findIndex(
@@ -63,8 +62,10 @@ export const predictSlice = createSlice({
       } else {
         let group = state.predictions[groupIndex];
         let games = group.games;
-        
-        const gameIndex = games.findIndex((game) => game.id === gameId);
+
+        const gameIndex = games.findIndex(
+          (game) => game.id === gamePrediction.id
+        );
         if (gameIndex == -1) {
           games.push(gamePrediction);
         } else {
@@ -103,7 +104,7 @@ export const savePredictions = (): AppThunk => async (dispatch) => {
 };
 
 export default predictSlice.reducer;
-export const { predictGroup, setSaved } = predictSlice.actions;
+export const { predictGroup, predictGame, setSaved } = predictSlice.actions;
 
 export const selectGroupPredictions = (state: AppState) =>
   state.predict.predictions;

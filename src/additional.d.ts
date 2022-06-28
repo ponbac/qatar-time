@@ -29,6 +29,7 @@ type PlayerUser = {
   description: string;
   avatar: string;
   score: number;
+  predictions: GroupPrediction[];
 };
 
 type GamePrediction = {

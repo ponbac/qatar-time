@@ -2,12 +2,16 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReorderableGroup from "../../components/ReorderableGroup";
+import { savePredictions } from "../../features/predict/predictSlice";
 import { fetchGroups } from "../../utils/dataFetcher";
+import { useAppDispatch } from "../../utils/store";
 
 const Predict: React.FC<{}> = () => {
   //const { groups, isLoading, isError } = useGroups();
   const [groups, setGroups] = useState<Group[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
@@ -43,7 +47,13 @@ const Predict: React.FC<{}> = () => {
             <ReorderableGroup key={group.id} group={group} />
           ))}
       </div>
-      <Link to="/predict/group/a">
+      <Link
+        to="/predict/group/a"
+        onClick={() => {
+          console.log("save predictions");
+          dispatch(savePredictions());
+        }}
+      >
         <div className="mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
           Games &#8594;
         </div>

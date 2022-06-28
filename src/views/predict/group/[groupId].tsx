@@ -4,6 +4,11 @@ import moment from "moment";
 import React, { FC, useEffect, useState } from "react";
 import TeamFlag from "../../../components/TeamFlag";
 import { fetchGroup } from "../../../utils/dataFetcher";
+import { useAppDispatch } from "../../../utils/store";
+import {
+  predictGame,
+  savePredictions,
+} from "../../../features/predict/predictSlice";
 
 const TeamBlock: FC<{
   team: Team;
@@ -32,12 +37,28 @@ const TeamBlock: FC<{
 };
 
 const GameBlock: FC<{ game: Game }> = ({ game }) => {
+  let params = useParams();
+  const id = params.id;
+
+  const dispatch = useAppDispatch();
+
   const [selectedTeam, setSelectedTeam] = useState<Team>();
   const teamClickHandler = (team: Team) => {
     if (selectedTeam?.id == team.id) {
       setSelectedTeam(undefined);
     } else {
       setSelectedTeam(team);
+      dispatch(
+        predictGame({
+          groupId: id,
+          gamePrediction: {
+            id: game.id,
+            homeGoals: 0,
+            awayGoals: 0,
+            winner: team.name,
+          },
+        })
+      );
     }
   };
 
@@ -69,6 +90,8 @@ const GroupBlock: FC<{}> = ({}) => {
 
   const [group, setGroup] = useState<Group>();
   const [isLoading, setIsLoading] = useState(true);
+
+  const dispatch = useAppDispatch();
 
   const groupOrder = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const nextGroupId = (): string => {
@@ -130,6 +153,9 @@ const GroupBlock: FC<{}> = ({}) => {
               ? "/"
               : `/predict/group/${nextGroupId()}`
           }
+          onClick={() => {
+            dispatch(savePredictions());
+          }}
         >
           <div className="hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
             {(id as string).toUpperCase() === "H" ? "Save" : "Next Group"}

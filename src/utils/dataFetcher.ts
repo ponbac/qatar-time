@@ -147,7 +147,12 @@ const fetchUser = async (userId: string): Promise<any> => {
     throw new Error(error.message);
   }
 
-  return data[0];
+  let user = data[0];
+  if (user.predictions != null) {
+    user.predictions = JSON.parse(user.predictions);
+  }
+
+  return user;
 };
 
 const fetchAllUsers = async (): Promise<any> => {
