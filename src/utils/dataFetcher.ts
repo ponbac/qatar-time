@@ -178,7 +178,7 @@ const updateUserData = async (
 
 const updateUserPredictions = async (
   userId: string,
-  predictions: Map<string, GroupPrediction>
+  predictions: GroupPrediction[]
 ): Promise<any> => {
   const predictionsJson = JSON.stringify(predictions);
   console.log(predictionsJson);

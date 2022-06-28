@@ -5,13 +5,13 @@ import {
   updateUserData,
   updateUserPredictions,
 } from "../../utils/dataFetcher";
-import { AppState, AppThunk } from "../../utils/store";
+import store, { AppState, AppThunk } from "../../utils/store";
 
 const initialPredictState: {
-  predictions: Map<string, GroupPrediction> | null;
+  predictions: GroupPrediction[];
   isSaved: boolean | null;
 } = {
-  predictions: null,
+  predictions: [],
   isSaved: null,
 };
 
@@ -23,43 +23,56 @@ export const predictSlice = createSlice({
   reducers: {
     predictGroup(state, action) {
       const groupId = action.payload.groupId;
-      const groupPrediction = action.payload.groupPrediction;
+      const teams = action.payload.prediction;
 
-      if (state.predictions == null) {
-        state.predictions = new Map();
+      const groupIndex = state.predictions.findIndex(
+        (group) => group.groupId === groupId
+      );
+
+      if (groupIndex == -1) {
+        state.predictions.push({
+          groupId: groupId,
+          games: [],
+          result: teams,
+        });
+      } else {
+        let group = state.predictions[groupIndex];
+        group.result = teams;
+
+        state.predictions[groupIndex] = group;
       }
-
-      state.predictions.set(groupId, groupPrediction);
     },
     predictGame(state, action) {
       const groupId = action.payload.groupId;
       const gameId = action.payload.gameId;
       const gamePrediction = action.payload.gamePrediction;
 
-      if (state.predictions == null) {
-        state.predictions = new Map();
-      }
+      const groupIndex = state.predictions.findIndex(
+        (group) => group.groupId === groupId
+      );
 
-      const groupPrediction = state.predictions.get(groupId);
-      if (groupPrediction == null) {
-        state.predictions.set(groupId, {
+      if (groupIndex == -1) {
+        let games = [];
+        games.push(gamePrediction);
+
+        state.predictions.push({
           groupId: groupId,
-          games: [],
+          games: games,
           result: [],
         });
-      }
-
-      if (groupPrediction && groupPrediction.games) {
-        const games = groupPrediction.games;
+      } else {
+        let group = state.predictions[groupIndex];
+        let games = group.games;
+        
         const gameIndex = games.findIndex((game) => game.id === gameId);
-        if (gameIndex === -1) {
+        if (gameIndex == -1) {
           games.push(gamePrediction);
         } else {
           games[gameIndex] = gamePrediction;
         }
 
-        groupPrediction.games = games;
-        state.predictions.set(groupId, groupPrediction);
+        group.games = games;
+        state.predictions[groupIndex] = group;
       }
     },
     setSaved(state, action) {
@@ -70,15 +83,24 @@ export const predictSlice = createSlice({
   extraReducers: {},
 });
 
-export const savePredictions =
-  (user: User, predictions: Map<string, GroupPrediction>): AppThunk =>
-  async (dispatch) => {
-    const playerUser = fetchUser(user.id).then((playerUser) => {
-      updateUserPredictions(user.id, predictions);
+export const savePredictions = (): AppThunk => async (dispatch) => {
+  const user = store.getState().auth.user;
+  if (user == null) {
+    return;
+  }
 
-      dispatch(setSaved(true));
+  let predictions = store.getState().predict.predictions;
+  if (predictions) {
+    predictions.forEach((prediction) => {
+      // TODO: Check if prediction is valid
+      console.log(prediction);
     });
-  };
+
+    updateUserPredictions(user.id, predictions);
+
+    dispatch(setSaved(true));
+  }
+};
 
 export default predictSlice.reducer;
 export const { predictGroup, setSaved } = predictSlice.actions;
