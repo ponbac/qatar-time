@@ -108,9 +108,8 @@ const fetchTeam = async (teamId?: string, teamName?: string): Promise<Team> => {
 // };
 
 const fetchGames = async (): Promise<Game[]> => {
-  const { data, error } = await SUPABASE.from("games")
-    .select(
-      `
+  const { data, error } = await SUPABASE.from("games").select(
+    `
     id,
     finished,
     homeGoals,
@@ -120,7 +119,7 @@ const fetchGames = async (): Promise<Game[]> => {
     date,
     groupId
     `
-    )
+  );
   if (error) {
     throw new Error(error.message);
   }
@@ -177,6 +176,24 @@ const updateUserData = async (
   return data;
 };
 
+const updateUserPredictions = async (
+  userId: string,
+  predictions: Map<string, GroupPrediction>
+): Promise<any> => {
+  const predictionsJson = JSON.stringify(predictions);
+  console.log(predictionsJson);
+
+  const { data, error } = await SUPABASE.from("users")
+    .update({ predictions: predictionsJson })
+    .match({ id: userId });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
 export {
   SUPABASE,
   fetchGroup,
@@ -186,5 +203,6 @@ export {
   fetchUser,
   fetchAllUsers,
   updateUserData,
+  updateUserPredictions,
   isLoggedIn,
 };
