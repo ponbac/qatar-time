@@ -55,7 +55,7 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
             id: game.id,
             homeGoals: 0,
             awayGoals: 0,
-            winner: team.name,
+            winner: team.id,
           },
         })
       );

@@ -21,6 +21,7 @@ type Game = {
   awayGoals: number;
   date: string;
   groupId: string;
+  winner: number;
 };
 
 type PlayerUser = {
@@ -36,7 +37,7 @@ type GamePrediction = {
   id: number;
   homeGoals: number;
   awayGoals: number;
-  winner: string;
+  winner: number;
 };
 
 type GroupPrediction = {
