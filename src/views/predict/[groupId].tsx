@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 import React, { FC, useEffect, useState } from "react";
-import TeamFlag from "../../../components/TeamFlag";
-import { fetchGroup } from "../../../utils/dataFetcher";
-import { useAppDispatch } from "../../../utils/store";
+import TeamFlag from "../../components/TeamFlag";
+import { fetchGroup } from "../../utils/dataFetcher";
+import { useAppDispatch } from "../../utils/store";
 import {
   predictGame,
   savePredictions,
-} from "../../../features/predict/predictSlice";
+} from "../../features/predict/predictSlice";
 
 const TeamBlock: FC<{
   team: Team;

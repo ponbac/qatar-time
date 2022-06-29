@@ -8,7 +8,7 @@ import store from "./utils/store";
 import Home from "./views";
 import HallOfFame from "./views/halloffame";
 import Predict from "./views/predict/groups";
-import GroupBlock from "./views/predict/group/[groupId]";
+import GroupBlock from "./views/predict/[groupId]";
 import Schedule from "./views/schedule";
 import UpdateProfile from "./views/profile/update";
 import UserProfile from "./views/profile/[user]";
