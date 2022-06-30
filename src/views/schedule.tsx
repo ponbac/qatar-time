@@ -78,7 +78,7 @@ const Schedule: FC<{}> = ({}) => {
         <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">
           Schedule
         </h1>
-        {games && games?.map((game) => <GameBlock key={game.id} game={game} />)}
+        {games && games?.sort((a, b) => a.date.localeCompare(b.date)).map((game) => <GameBlock key={game.id} game={game} />)}
       </motion.div>
     </div>
   );
