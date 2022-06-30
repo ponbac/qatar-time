@@ -1,7 +1,7 @@
 import { Reorder } from "framer-motion";
 import { useEffect, useState } from "react";
-import { predictGroup } from "../features/predict/predictSlice";
-import { useAppDispatch } from "../utils/store";
+import { predictGroup, selectPredictions } from "../features/predict/predictSlice";
+import { useAppDispatch, useAppSelector } from "../utils/store";
 import TeamFlag from "./TeamFlag";
 
 const GroupItem: React.FC<{ team: Team }> = ({ team }) => {
@@ -15,8 +15,15 @@ const GroupItem: React.FC<{ team: Team }> = ({ team }) => {
 
 const ReorderableGroup: React.FC<{ group: Group }> = ({ group }) => {
   const [groupItem, setGroup] = useState<Team[]>(group.teams);
+  const predictions = useAppSelector(selectPredictions);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (predictions.length > 0) {
+      setGroup(predictions.find(p => p.groupId === group.id)?.result);
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(predictGroup({ groupId: group.id, prediction: groupItem }));

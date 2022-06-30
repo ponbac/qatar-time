@@ -79,6 +79,9 @@ export const predictSlice = createSlice({
     setSaved(state, action) {
       state.isSaved = action.payload;
     },
+    setPredictions(state, action) {
+      state.predictions = action.payload;
+    },
   },
 
   extraReducers: {},
@@ -104,7 +107,8 @@ export const savePredictions = (): AppThunk => async (dispatch) => {
 };
 
 export default predictSlice.reducer;
-export const { predictGroup, predictGame, setSaved } = predictSlice.actions;
+export const { predictGroup, predictGame, setSaved, setPredictions } =
+  predictSlice.actions;
 
-export const selectGroupPredictions = (state: AppState) =>
+export const selectPredictions = (state: AppState) =>
   state.predict.predictions;

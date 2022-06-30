@@ -186,7 +186,7 @@ const updateUserPredictions = async (
   predictions: GroupPrediction[]
 ): Promise<any> => {
   const predictionsJson = JSON.stringify(predictions);
-  console.log(predictionsJson);
+  //console.log(predictionsJson);
 
   const { data, error } = await SUPABASE.from("users")
     .update({ predictions: predictionsJson })
@@ -199,6 +199,24 @@ const updateUserPredictions = async (
   return data;
 };
 
+const fetchPredictions = async (userId: string): Promise<GroupPrediction[]> => {
+  const { data, error } = await SUPABASE.from("users")
+    .select(
+      `
+    predictions
+    `
+    )
+    .match({ id: userId });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const parsedPredictions = JSON.parse(data[0].predictions);
+  console.log(parsedPredictions);
+
+  return parsedPredictions;
+};
+
 export {
   SUPABASE,
   fetchGroup,
@@ -207,6 +225,7 @@ export {
   getCurrentUser,
   fetchUser,
   fetchAllUsers,
+  fetchPredictions,
   updateUserData,
   updateUserPredictions,
   isLoggedIn,

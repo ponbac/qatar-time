@@ -8,10 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   login,
   selectAuthState,
+  selectUser,
   signedIn,
   signedOut,
 } from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
+import { setPredictions } from "../features/predict/predictSlice";
 
 const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
   return (
@@ -37,6 +39,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const [introVisible, setIntroVisible] = useState(true);
   const introDuration: number = 3.0;
 
+  const user = useSelector(selectUser);
   const authState = useSelector(selectAuthState);
   const dispatch = useAppDispatch();
 
@@ -69,22 +72,13 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     };
   }, []);
 
+  // TODO: Can this be removed?
   useEffect(() => {
     if (authState.isAuthenticated) {
-      const authUser = authState.user;
-      if (authUser) {
-        authIdToPlayerUser(authUser.id).then((playerUser) => {
-          if (playerUser.name == null) {
-            // updateUserData(
-            //   authUser.id,
-            //   authUser.user_metadata.full_name,
-            //   authUser.user_metadata.avatar_url,
-            //   "No cool description yet!"
-            // );
-
-            console.log(playerUser);
-          }
-        });
+      if (user) {
+        if (user.predictions && user.predictions.length > 0) {
+          dispatch(setPredictions(user.predictions));
+        }
       }
     } else {
       const user = SUPABASE.auth.user();

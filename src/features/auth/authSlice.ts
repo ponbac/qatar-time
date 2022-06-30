@@ -1,4 +1,4 @@
-import { AnyAction, createSlice, ThunkAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { User } from "@supabase/supabase-js";
 import { fetchUser, updateUserData } from "../../utils/dataFetcher";
 import { AppState, AppThunk } from "../../utils/store";
