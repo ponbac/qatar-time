@@ -11,7 +11,7 @@ import {
   selectPredictions,
 } from "../../features/predict/predictSlice";
 
-const TeamBlock: FC<{
+export const TeamBlock: FC<{
   team: Team;
   away: boolean;
   selected: boolean;

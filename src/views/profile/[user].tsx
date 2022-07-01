@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FC, useEffect, useState } from "react";
 import { fetchUser } from "../../utils/dataFetcher";
 
@@ -66,6 +66,11 @@ const UserProfile: FC<{}> = ({}) => {
             </h1>
           </div>
           <h1 className="text-center font-bold text-xl">Score: {user.score}</h1>
+          <Link to={`/profile/${user.id}/predictions`}>
+          <div className="mt-4 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-36 hover:w-40 hover:text-gray-400 p-2 rounded-xl font-bold">
+            Predictions
+          </div>
+        </Link>
         </div>
       </motion.div>
     </div>
