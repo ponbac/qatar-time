@@ -47,12 +47,15 @@ const Predict: React.FC<{}> = () => {
             <ReorderableGroup key={group.id} group={group} />
           ))}
       </div>
-      <Link
-        to="/predict/group/a"
-      >
-        <div className="mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
+      <Link to="/predict/group/a">
+        <button
+          className="mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold"
+          onClick={() => {
+            dispatch(savePredictions());
+          }}
+        >
           Games &#8594;
-        </div>
+        </button>
       </Link>
     </motion.div>
   );

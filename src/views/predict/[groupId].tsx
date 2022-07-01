@@ -243,9 +243,9 @@ const GroupBlock: FC<{}> = ({}) => {
               : `/predict/group/${nextGroupId()}`
           }
           onClick={() => {
-            if ((id as string).toUpperCase() === "H") {
+            //if ((id as string).toUpperCase() === "H") {
               dispatch(savePredictions());
-            }
+            //}
           }}
         >
           <div className="hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
