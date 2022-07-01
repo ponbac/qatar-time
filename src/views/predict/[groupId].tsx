@@ -4,10 +4,11 @@ import moment from "moment";
 import React, { FC, useEffect, useState } from "react";
 import TeamFlag from "../../components/TeamFlag";
 import { fetchGroup } from "../../utils/dataFetcher";
-import { useAppDispatch } from "../../utils/store";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 import {
   predictGame,
   savePredictions,
+  selectPredictions,
 } from "../../features/predict/predictSlice";
 
 const TeamBlock: FC<{
@@ -46,6 +47,7 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
 
   let date = moment(game.date).format("dddd DD/MM, HH:mm");
 
+  const predictions = useAppSelector(selectPredictions);
   const dispatch = useAppDispatch();
 
   const [selectedTeam, setSelectedTeam] = useState<Team>();
@@ -119,6 +121,22 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
       })
     );
   }, [homeGoals, awayGoals]);
+
+  // Show saved predictions as presets if they exist
+  useEffect(() => {
+    const groupPrediction = predictions.find(
+      (g) => g.groupId === id?.toUpperCase()
+    );
+    if (groupPrediction) {
+      const gamePrediction = groupPrediction.games.find(
+        (g) => g.id === game.id
+      );
+      if (gamePrediction) {
+        setHomeGoals(gamePrediction.homeGoals);
+        setAwayGoals(gamePrediction.awayGoals);
+      }
+    }
+  }, []);
 
   return (
     <div className="font-mono flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-8 mb-10 lg:mb-0">
