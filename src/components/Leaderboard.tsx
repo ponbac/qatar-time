@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
 import { FC, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { fetchAllUsers } from "../utils/dataFetcher";
+import LoadingIndicator from "./LoadingIndicator";
 
-const PlayerItem: FC<{
+type PlayerItemProps = {
   rank: number;
   player: PlayerUser;
-}> = ({ rank, player }) => {
+};
+const PlayerItem = (props: PlayerItemProps) => {
+  const { rank, player } = props;
+
   const rankColor = (rank: number): string => {
     switch (rank) {
       case 1:
@@ -22,7 +27,7 @@ const PlayerItem: FC<{
 
   return (
     <Link to={`/profile/${player.id}`}>
-      <div className="mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 font-mono bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
+      <div className="font-novaMono mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
         <h1 className={`text-4xl font-bold`}>
           <span className={rankColor(rank)}>{rank}</span>.
         </h1>
@@ -36,8 +41,10 @@ const PlayerItem: FC<{
           width={70}
           height={70}
         />
-        <div className="flex-1 lg:w-72">
-          <h1 className="text-xl font-bold">{player.name ?? "Unknown"}</h1>
+        <div className="flex-1 lg:w-72 overflow-hidden">
+          <h1 className="text-xl font-bold text-ellipsis overflow-hidden">
+            {player.name ?? "Unknown"}
+          </h1>
           <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
             {player.description ?? "Who might this be!?"}
           </p>
@@ -48,7 +55,11 @@ const PlayerItem: FC<{
   );
 };
 
-const PlayerList: FC<{ players: PlayerUser[] }> = ({ players }) => {
+type PlayerListProps = {
+  players: PlayerUser[];
+};
+const PlayerList = (props: PlayerListProps) => {
+  const { players } = props;
   players.sort((a, b) => b.score - a.score);
   return (
     <ul className="space-y-2">
@@ -59,29 +70,15 @@ const PlayerList: FC<{ players: PlayerUser[] }> = ({ players }) => {
   );
 };
 
-const Leaderboard: FC<{}> = () => {
-  const [players, setPlayers] = useState<PlayerUser[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchAllUsers().then((data) => {
-      setPlayers(data);
-      setIsLoading(false);
-    });
-  }, []);
+const Leaderboard = () => {
+  const {
+    data: players,
+    isLoading,
+    error,
+  } = useQuery("users", fetchAllUsers, { refetchInterval: 60 * 1000 });
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="loading-indicator">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    );
+    return <LoadingIndicator />;
   }
 
   return (

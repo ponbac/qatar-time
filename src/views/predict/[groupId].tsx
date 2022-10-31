@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import TeamFlag from "../../components/TeamFlag";
 import { fetchGroup } from "../../utils/dataFetcher";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
@@ -10,6 +10,12 @@ import {
   savePredictions,
   selectPredictions,
 } from "../../features/predict/predictSlice";
+import {
+  GROUPS,
+  GROUP_PREDICTIONS_CLOSE,
+  TBD_TEAM,
+} from "../../utils/constants";
+import LoadingIndicator from "../../components/LoadingIndicator";
 
 export const TeamBlock: FC<{
   team: Team;
@@ -21,19 +27,19 @@ export const TeamBlock: FC<{
   return (
     <div
       className={
-        "gap-2 bg-gray-400/30 backdrop-blur-sm py-2 px-4 flex flex-row items-center justify-between w-60 p-4 rounded-xl transition-all " +
+        "gap-2 bg-gray-400/30 backdrop-blur-sm py-2 px-4 flex flex-row items-center justify-between w-80 p-4 rounded-xl transition-all h-14 " +
         (selected == true ? "bg-green-600/60" : "")
       }
     >
       {away && (
         <>
           <TeamFlag team={team} width={flagWidth} />
-          <p className="text-xl">{team.name}</p>
+          <p className="text-xl font-bold">{team.name}</p>
         </>
       )}
       {!away && (
         <>
-          <p className="text-xl">{team.name}</p>
+          <p className="text-xl font-bold">{team.name}</p>
           <TeamFlag team={team} width={flagWidth} />
         </>
       )}
@@ -41,9 +47,18 @@ export const TeamBlock: FC<{
   );
 };
 
-const GameBlock: FC<{ game: Game }> = ({ game }) => {
-  let params = useParams();
-  const id = params.id;
+type GameBlockProps = {
+  game: Game;
+};
+export const GameBlock = (props: GameBlockProps) => {
+  let { game } = props;
+
+  if (game.homeTeam === null) {
+    game.homeTeam = TBD_TEAM;
+  }
+  if (game.awayTeam === null) {
+    game.awayTeam = TBD_TEAM;
+  }
 
   let date = moment(game.date).format("dddd DD/MM, HH:mm");
 
@@ -109,9 +124,11 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
       winner = -1;
     }
 
+    console.log(winner);
+
     dispatch(
       predictGame({
-        groupId: id,
+        groupId: game.groupId,
         gamePrediction: {
           id: game.id,
           homeGoals: homeGoals,
@@ -122,10 +139,10 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
     );
   }, [homeGoals, awayGoals]);
 
-  // Show saved predictions as presets if they exist
   useEffect(() => {
+    // Show saved predictions as presets if they exist
     const groupPrediction = predictions.find(
-      (g) => g.groupId === id?.toUpperCase()
+      (g) => g.groupId === game.groupId.toUpperCase()
     );
     if (groupPrediction) {
       const gamePrediction = groupPrediction.games.find(
@@ -139,7 +156,7 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
   }, []);
 
   return (
-    <div className="font-mono flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-8 mb-10 lg:mb-0">
+    <div className="font-novaMono flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-8 mb-10 lg:mb-0">
       <TeamBlock
         team={game.homeTeam}
         away={false}
@@ -152,7 +169,7 @@ const GameBlock: FC<{ game: Game }> = ({ game }) => {
             <AddButton />
           </div>
 
-          <p className="text-2xl">
+          <p className="text-2xl font-bold">
             {homeGoals} - {awayGoals}
           </p>
           <div className="ml-4 space-x-2">
@@ -189,6 +206,16 @@ const GroupBlock: FC<{}> = ({}) => {
     return groupOrder[index + 1];
   };
 
+  // TODO: This should be server-side hehe (and implemented completely differently)
+  const [predictionsClosed, setPredictionsClosed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const currentTime = moment();
+    if (currentTime.isAfter(GROUP_PREDICTIONS_CLOSE)) {
+      setPredictionsClosed(true);
+    }
+  }, []);
+
   useEffect(() => {
     if (id != undefined) {
       setIsLoading(true);
@@ -199,34 +226,38 @@ const GroupBlock: FC<{}> = ({}) => {
     }
   }, [id]);
 
+  if (predictionsClosed) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen text-center px-3">
+        <h1 className="text-4xl font-bold font-novaMono">
+          Predictions are currently closed!
+        </h1>
+        <h2 className="text-sm font-novaMono">
+          Bracket stage predictions will open after the group stage is finished.
+        </h2>
+      </div>
+    );
+  }
+
   if (!id) {
     return (
-      <div className="font-mono flex flex-row items-center justify-center">
+      <div className="font-novaMono flex flex-row items-center justify-center">
         No group ID provided!
       </div>
     );
   }
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="loading-indicator">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    );
+    return <LoadingIndicator fullscreen={true} />;
   }
 
   return (
-    <div className="min-h-screen font-mono flex flex-col items-center justify-center my-6">
+    <div className="min-h-screen font-novaMono flex flex-col items-center justify-center my-6">
       <motion.div
         className="flex flex-col items-center justify-center gap-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.5 }}
+        transition={{ duration: 1.0 }}
         key={group?.id}
       >
         <h1 className="text-4xl font-bold" key={"header-" + group?.id}>
@@ -238,18 +269,20 @@ const GroupBlock: FC<{}> = ({}) => {
             .map((game) => <GameBlock key={game.id} game={game} />)}
         <Link
           to={
-            (id as string).toUpperCase() === "H"
+            (id as string).toUpperCase() === GROUPS[GROUPS.length - 1]
               ? "/"
               : `/predict/group/${nextGroupId()}`
           }
           onClick={() => {
             //if ((id as string).toUpperCase() === "H") {
-              dispatch(savePredictions());
+            dispatch(savePredictions());
             //}
           }}
         >
           <div className="hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
-            {(id as string).toUpperCase() === "H" ? "Save" : "Next Group"}
+            {(id as string).toUpperCase() === GROUPS[GROUPS.length - 1]
+              ? "Save"
+              : "Next Group"}
           </div>
         </Link>
       </motion.div>

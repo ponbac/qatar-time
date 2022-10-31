@@ -1,37 +1,54 @@
 import { motion } from "framer-motion";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LoadingIndicator from "../../components/LoadingIndicator";
 import ReorderableGroup from "../../components/ReorderableGroup";
 import { savePredictions } from "../../features/predict/predictSlice";
+import { GROUP_PREDICTIONS_CLOSE } from "../../utils/constants";
 import { fetchGroups } from "../../utils/dataFetcher";
 import { useAppDispatch } from "../../utils/store";
 
-const Predict: React.FC<{}> = () => {
+const PredictGroups = () => {
   //const { groups, isLoading, isError } = useGroups();
   const [groups, setGroups] = useState<Group[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // TODO: This should be server-side hehe (and implemented completely differently)
+  const [predictionsClosed, setPredictionsClosed] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchGroups().then((g) => {
-      setGroups(g);
-      setIsLoading(false);
-    });
+    const currentTime = moment();
+    if (currentTime.isAfter(GROUP_PREDICTIONS_CLOSE)) {
+      setPredictionsClosed(true);
+    }
+
+    if (!predictionsClosed) {
+      setIsLoading(true);
+      fetchGroups().then((g) => {
+        setGroups(g);
+        setIsLoading(false);
+      });
+    }
   }, []);
 
-  if (isLoading) {
+  if (predictionsClosed) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="loading-indicator">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <div className="flex flex-col justify-center items-center min-h-screen text-center px-3">
+        <h1 className="text-4xl font-bold font-novaMono">
+          Predictions are currently closed!
+        </h1>
+        <h2 className="text-sm font-novaMono">
+          Bracket stage predictions will open after the group stage is finished.
+        </h2>
       </div>
     );
+  }
+
+  if (isLoading) {
+    return <LoadingIndicator fullscreen={true} />;
   }
 
   return (
@@ -49,7 +66,7 @@ const Predict: React.FC<{}> = () => {
       </div>
       <Link to="/predict/group/a">
         <button
-          className="mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold"
+          className="font-novaMono mb-6 hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold"
           onClick={() => {
             dispatch(savePredictions());
           }}
@@ -61,4 +78,4 @@ const Predict: React.FC<{}> = () => {
   );
 };
 
-export default Predict;
+export default PredictGroups;

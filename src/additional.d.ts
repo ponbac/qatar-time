@@ -4,6 +4,11 @@ type Group = {
   games: Game[];
 };
 
+type GroupResult = {
+  id: string;
+  results: number[];
+};
+
 type Team = {
   id: number;
   name: string;
@@ -22,6 +27,18 @@ type Game = {
   date: string;
   groupId: string;
   winner: number;
+};
+
+type DBGame = {
+  id: number;
+  finished: boolean;
+  homeTeam: number;
+  awayTeam: number;
+  homeGoals: number;
+  awayGoals: number;
+  date: string;
+  groupId: string;
+  winner: number | null;
 };
 
 type PlayerUser = {

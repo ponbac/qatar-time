@@ -1,5 +1,5 @@
 import { createClient, User } from "@supabase/supabase-js";
-import useSWR, { Fetcher } from "swr";
+import { GROUPS } from "./constants";
 
 const API_URL = "/api";
 const SUPABASE = createClient(
@@ -12,20 +12,27 @@ const SUPABASE = createClient(
     detectSessionInUrl: true,
   }
 );
-const FETCHER = (url: RequestInfo) => fetch(url).then((r) => r.json());
 
-// const useGroups = (): {
-//   groups: Group[] | undefined;
-//   isLoading: boolean;
-//   isError: Error;
-// } => {
-//   const { data, error } = useSWR<Group[]>("/api/groups", FETCHER);
+const fetchTeams = async (): Promise<Team[]> => {
+  const { data, error } = await SUPABASE.from("teams").select();
+  if (error) {
+    throw new Error(error.message);
+  }
 
-//   return { groups: data, isLoading: !error && !data, isError: error };
-// };
+  return data;
+};
+
+const fetchGroupResults = async (): Promise<GroupResult[]> => {
+  const { data, error } = await SUPABASE.from("groups").select();
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
 
 const fetchGroups = async (): Promise<Group[]> => {
-  const groupNames = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const groupNames = GROUPS;
   let groups: Group[] = [];
 
   await Promise.all(
@@ -97,6 +104,15 @@ const fetchTeam = async (teamId?: string, teamName?: string): Promise<Team> => {
   return data;
 };
 
+const insertTeam = async (team: Team): Promise<any> => {
+  const { data, error } = await SUPABASE.from("teams").insert(team);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
 // const useGames = (): {
 //   games: Game[] | undefined;
 //   isLoading: boolean;
@@ -117,7 +133,8 @@ const fetchGames = async (): Promise<Game[]> => {
     homeTeam: homeTeam ( id, name, flagCode, groupId ),
     awayTeam: awayTeam ( id, name, flagCode, groupId ),
     date,
-    groupId
+    groupId,
+    winner
     `
   );
   if (error) {
@@ -126,6 +143,38 @@ const fetchGames = async (): Promise<Game[]> => {
 
   return data;
 };
+
+const fetchGame = async (gameId: string): Promise<Game> => {
+  const { data, error } = await SUPABASE.from("games")
+    .select(
+      `
+    id,
+    finished,
+    homeGoals,
+    awayGoals,
+    homeTeam: homeTeam ( id, name, flagCode, groupId ),
+    awayTeam: awayTeam ( id, name, flagCode, groupId ),
+    date,
+    groupId,
+    winner
+    `
+    )
+    .match({ id: gameId });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data[0];
+};
+
+const insertGame = async (game: DBGame): Promise<any> => {
+  const { data, error } = await SUPABASE.from("games").insert(game);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
 
 const getCurrentUser = (): User | null => {
   const user = SUPABASE.auth.user();
@@ -161,7 +210,14 @@ const fetchAllUsers = async (): Promise<any> => {
     throw new Error(error.message);
   }
 
-  return data;
+  let parsedUsers = data.map((user) => {
+    if (user.predictions != null) {
+      user.predictions = JSON.parse(user.predictions);
+    }
+    return user;
+  });
+
+  return parsedUsers;
 };
 
 const updateUserData = async (
@@ -199,6 +255,28 @@ const updateUserPredictions = async (
   return data;
 };
 
+const updateGame = async (
+  gameId: number,
+  winner: number,
+  homeGoals: number,
+  awayGoals: number
+): Promise<any> => {
+  const { data, error } = await SUPABASE.from("games")
+    .update({
+      finished: true,
+      winner: winner == -1 ? null : winner,
+      homeGoals: homeGoals,
+      awayGoals: awayGoals,
+    })
+    .match({ id: gameId });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
 const fetchPredictions = async (userId: string): Promise<GroupPrediction[]> => {
   const { data, error } = await SUPABASE.from("users")
     .select(
@@ -219,8 +297,11 @@ const fetchPredictions = async (userId: string): Promise<GroupPrediction[]> => {
 
 export {
   SUPABASE,
+  fetchTeams,
   fetchGroup,
   fetchGroups,
+  fetchGroupResults,
+  fetchGame,
   fetchGames,
   getCurrentUser,
   fetchUser,
@@ -228,5 +309,8 @@ export {
   fetchPredictions,
   updateUserData,
   updateUserPredictions,
+  updateGame,
+  insertGame,
   isLoggedIn,
+  insertTeam,
 };

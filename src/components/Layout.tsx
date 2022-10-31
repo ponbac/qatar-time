@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { FC, ReactNode, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "./Navbar";
-import { fetchUser, SUPABASE, updateUserData } from "../utils/dataFetcher";
+import { fetchUser, SUPABASE } from "../utils/dataFetcher";
 import { SignInButton, SignInProvider } from "./auth/Buttons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   login,
   selectAuthState,
@@ -14,12 +14,13 @@ import {
 } from "../features/auth/authSlice";
 import { useAppDispatch } from "../utils/store";
 import { setPredictions } from "../features/predict/predictSlice";
+import LoginView from "../views/login";
 
 const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
   return (
     <Helmet>
       <title>
-        {user ? `[${user.name} - ${user.score}p]` : "Backman - [Qatar 2022]"}
+        {user ? `[${user.name} - ${user.score}p]` : "Backman - [QATAR 22/23]"}
       </title>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
@@ -36,9 +37,6 @@ const Head: FC<{ user?: PlayerUser }> = ({ user }) => {
 };
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
-  const [introVisible, setIntroVisible] = useState(true);
-  const introDuration: number = 3.0;
-
   const user = useSelector(selectUser);
   const authState = useSelector(selectAuthState);
   const dispatch = useAppDispatch();
@@ -90,6 +88,14 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [authState]);
 
+  if (window.location.pathname === "/login" && !authState.isAuthenticated) {
+    return (
+      <>
+        <LoginView />
+      </>
+    );
+  }
+
   if (!authState.isAuthenticated) {
     return (
       <>
@@ -100,10 +106,12 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
         >
-          <div className="flex flex-col space-y-3 w-80 items-center font-mono bg-gray-600/70 backdrop-blur-sm rounded-xl p-10">
-            <h1 className="font-mono font-bold text-3xl mb-2">Sign in with</h1>
-            <SignInButton provider={SignInProvider.Discord} text="Discord" />
+          <div className="flex flex-col space-y-3 w-80 items-center font-novaMono bg-gray-600/70 backdrop-blur-sm rounded-xl p-10">
+            <h1 className="font-novaMono font-bold text-3xl mb-2">
+              Sign in with
+            </h1>
             <SignInButton provider={SignInProvider.Facebook} text="Facebook" />
+            <SignInButton provider={SignInProvider.Discord} text="Discord" />
           </div>
         </motion.div>
       </>
@@ -114,29 +122,10 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       <Head user={authState.user ?? undefined} />
       <div className="min-h-screen flex flex-col">
-        {introVisible && (
-          <motion.div
-            className="min-h-screen flex items-center justify-center"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
-            transition={{ duration: introDuration }}
-            onAnimationStart={() =>
-              document.body.classList.add("overflow-hidden")
-            }
-            onAnimationComplete={() => {
-              document.body.classList.remove("overflow-hidden");
-              setIntroVisible(false);
-            }}
-          >
-            <h1 className="text-center animate-bounce h-full lg:h-48 font-novaMono font-extrabold text-transparent text-8xl bg-clip-text bg-gradient-to-r from-primary to-secondary">
-              It&apos;s betting time!
-            </h1>
-          </motion.div>
-        )}
         <motion.div
           initial={{ y: 0, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: introDuration }}
+          transition={{ duration: 0.5 }}
           className="min-h-screen flex flex-col lg:flex-row"
         >
           <div className="fixed min-w-full lg:min-w-fit z-10">
