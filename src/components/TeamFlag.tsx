@@ -17,7 +17,7 @@ const TeamFlag = (props: TeamFlagProps) => {
       src={
         isUrl(team.flagCode)
           ? team.flagCode
-          : team.flagCode.length < 4
+          : team.flagCode.length < 7
           ? `https://flagicons.lipis.dev/flags/4x3/${team.flagCode}.svg`
           : `/images/team-logos/${team.flagCode}.svg`
       }
