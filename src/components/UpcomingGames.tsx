@@ -73,7 +73,7 @@ const UpcomingGame = (props: UpcomingGameProps) => {
 
   return (
     <Link to={`/game/${game.id}`}>
-      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-2">
+      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-3">
         <div className="flex flex-row gap-4 justify-center items-center">
           <TeamFlag
             team={game.homeTeam}
