@@ -77,14 +77,14 @@ const UpcomingGame = (props: UpcomingGameProps) => {
         <div className="flex flex-row gap-4 justify-center items-center">
           <TeamFlag
             team={game.homeTeam}
-            width={"3.5rem"}
-            className="rounded-md h-16"
+            width={"4.5rem"}
+            className="rounded-md"
           />
           <p className="font-bold text-3xl">vs</p>
           <TeamFlag
             team={game.awayTeam}
-            width={"3.5rem"}
-            className="rounded-md h-16"
+            width={"4.5rem"}
+            className="rounded-md"
           />
         </div>
         <div className="flex flex-col items-center justify-center">
