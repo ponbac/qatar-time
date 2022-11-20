@@ -96,6 +96,7 @@ export const savePredictions = (): AppThunk => async (dispatch) => {
     });
 
     updateUserPredictions(user.id, predictions);
+    setPredictions(predictions);
 
     dispatch(setSaved(true));
   }
