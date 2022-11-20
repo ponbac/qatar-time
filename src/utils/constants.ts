@@ -6,7 +6,7 @@ export const APP_URL = (): string =>
 export const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 // TODO: This is a hack, but it works for now (should be server-side).
-export const GROUP_PREDICTIONS_CLOSE = "2022-11-20T16:00:00";
+export const GROUP_PREDICTIONS_CLOSE = "2022-11-20T16:45:00";
 export const PLAYOFF_PREDICTIONS_OPEN = "2022-12-02T22:00:00";
 export const PLAYOFF_PREDICTIONS_CLOSE = "2022-12-03T15:00:00";
 
