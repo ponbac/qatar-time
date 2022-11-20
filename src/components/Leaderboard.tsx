@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { fetchAllUsers } from "../utils/dataFetcher";
@@ -60,10 +60,18 @@ type PlayerListProps = {
 };
 const PlayerList = (props: PlayerListProps) => {
   const { players } = props;
-  players.sort((a, b) => b.score - a.score);
+
+  console.log(players);
+
+  const filteredPlayers = useMemo(() => {
+    return players
+      .filter((player) => (player.predictions ? true : false))
+      .sort((a, b) => b.score - a.score);
+  }, [players]);
+
   return (
     <ul className="space-y-2">
-      {players.map((player, index) => {
+      {filteredPlayers.map((player, index) => {
         return <PlayerItem key={index} rank={index + 1} player={player} />;
       })}
     </ul>
