@@ -18,7 +18,7 @@ const Home = () => {
     >
       <Header text="LEADERBOARD" />
       <div className="flex flex-col flex-0 justify-center items-center py-16 space-y-16">
-        <UpcomingGames />
+        <UpcomingGames numberOfGames={8} />
         <Leaderboard />
       </div>
     </motion.div>

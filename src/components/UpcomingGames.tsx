@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { selectPredictions } from "../features/predict/predictSlice";
@@ -46,13 +46,14 @@ const UpcomingGame = (props: UpcomingGameProps) => {
 
     let nextGameIndex = 0;
     for (const g of sortedGames) {
-      if (moment(g.date).isAfter(moment().subtract(300, "minutes"))) {
+      if (moment(g.date).isAfter(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))) {
         break;
       }
       nextGameIndex++;
     }
 
     const nextGame = sortedGames[nextGameIndex + offset];
+    console.log("nextGame: ", nextGame);
     //const nextGame = sortedGames[4 + offset];
 
     if (nextGame.homeTeam === null) {
@@ -73,18 +74,18 @@ const UpcomingGame = (props: UpcomingGameProps) => {
 
   return (
     <Link to={`/game/${game.id}`}>
-      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-3">
+      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-2">
         <div className="flex flex-row gap-4 justify-center items-center">
           <TeamFlag
             team={game.homeTeam}
-            width={"4.5rem"}
-            className="rounded-md"
+            width={"3.5rem"}
+            className="rounded-md h-16"
           />
           <p className="font-bold text-3xl">vs</p>
           <TeamFlag
             team={game.awayTeam}
-            width={"4.5rem"}
-            className="rounded-md"
+            width={"3.5rem"}
+            className="rounded-md h-16"
           />
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -105,13 +106,38 @@ const UpcomingGame = (props: UpcomingGameProps) => {
   );
 };
 
-const UpcomingGames = () => {
-  const { height, width } = useWindowDimensions();
+const FINISHED_TIMER_MINUTES = 300;
+const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
+  // const { height, width } = useWindowDimensions();
   const {
     data: games,
     isLoading,
     error,
   } = useQuery("games", fetchGames, { refetchInterval: 60 * 1000 });
+
+  const unfinishedGames = useMemo(
+    () =>
+      games
+        ? games
+            .filter((g) =>
+              moment(g.date).isAfter(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))
+            )
+            .sort((a, b) => a.date.localeCompare(b.date))
+        : [],
+    [games]
+  );
+
+  const finishedGames = useMemo(
+    () =>
+      games
+        ? games
+            .filter((g) =>
+              moment(g.date).isBefore(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))
+            )
+            .sort((a, b) => a.date.localeCompare(b.date))
+        : [],
+    [games]
+  );
 
   if (!games) {
     return (
@@ -121,38 +147,24 @@ const UpcomingGames = () => {
     );
   }
 
+  if (unfinishedGames.length === 0) {
+    return null;
+  }
+
   return (
-    <>
-      {games.filter((g) => !g.finished).length > 0 && (
-        <div className="flex flex-col items-center justify-center bg-gray-400/40 w-72 lg:w-fit py-3 rounded-3xl font-novaMono">
-          <p className="font-bold text-2xl text-center mb-2">Upcoming:</p>
-          <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
-            <UpcomingGame games={games} offset={0} />
-            {games.filter((g) => !g.finished).length > 1 && (
-              <UpcomingGame games={games} offset={1} />
-            )}
-            {games.filter((g) => !g.finished).length > 2 && (
-              <UpcomingGame games={games} offset={2} />
-            )}
-            {games.filter((g) => !g.finished).length > 3 && (
-              <UpcomingGame games={games} offset={3} />
-            )}
-            {games.filter((g) => !g.finished).length > 4 && (
-              <UpcomingGame games={games} offset={4} />
-            )}
-            {games.filter((g) => !g.finished).length > 5 && (
-              <UpcomingGame games={games} offset={5} />
-            )}
-            {games.filter((g) => !g.finished).length > 6 && (
-              <UpcomingGame games={games} offset={6} />
-            )}
-            {games.filter((g) => !g.finished).length > 7 && (
-              <UpcomingGame games={games} offset={7} />
-            )}
-          </div>
-        </div>
-      )}
-    </>
+    <div className="flex flex-col items-center justify-center bg-gray-400/40 w-72 lg:w-fit py-3 rounded-3xl font-novaMono">
+      <p className="font-bold text-2xl text-center mb-2">Upcoming:</p>
+      <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
+        {unfinishedGames
+          .slice(
+            0,
+            unfinishedGames.length > numberOfGames ? numberOfGames : undefined
+          )
+          .map((g, i) => (
+            <UpcomingGame games={games} offset={i} key={g.id} />
+          ))}
+      </div>
+    </div>
   );
 };
 
