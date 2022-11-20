@@ -91,6 +91,10 @@ const PredictionsList = (props: PredictionsListProps) => {
       }
     }, []);
 
+    if (!prediction) {
+      return null;
+    }
+
     return (
       <Link to={`/profile/${user.id}`}>
         <div
