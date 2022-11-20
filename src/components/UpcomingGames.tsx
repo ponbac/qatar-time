@@ -11,13 +11,11 @@ import LoadingIndicator from "./LoadingIndicator";
 import TeamFlag from "./TeamFlag";
 
 type UpcomingGameProps = {
-  games: Game[];
-  offset?: number;
+  game: Game;
 };
 const UpcomingGame = (props: UpcomingGameProps) => {
-  const { games, offset = 0 } = props;
-  const [game, setGame] = useState<Game | undefined>(undefined);
-  const [date, setDate] = useState<string | undefined>(undefined);
+  let { game } = props;
+
   const [prediction, setPrediction] = useState<GamePrediction | undefined>(
     undefined
   );
@@ -42,31 +40,15 @@ const UpcomingGame = (props: UpcomingGameProps) => {
   };
 
   useEffect(() => {
-    const sortedGames = games.sort((a, b) => a.date.localeCompare(b.date));
-
-    let nextGameIndex = 0;
-    for (const g of sortedGames) {
-      if (moment(g.date).isAfter(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))) {
-        break;
-      }
-      nextGameIndex++;
+    if (game.homeTeam === null) {
+      game.homeTeam = TBD_TEAM;
+    }
+    if (game.awayTeam === null) {
+      game.awayTeam = TBD_TEAM;
     }
 
-    const nextGame = sortedGames[nextGameIndex + offset];
-    console.log("nextGame: ", nextGame);
-    //const nextGame = sortedGames[4 + offset];
-
-    if (nextGame.homeTeam === null) {
-      nextGame.homeTeam = TBD_TEAM;
-    }
-    if (nextGame.awayTeam === null) {
-      nextGame.awayTeam = TBD_TEAM;
-    }
-
-    setGame(nextGame);
-    setDate(moment(nextGame.date).format("dddd DD/MM, HH:mm"));
-    setPrediction(findPrediction(nextGame, userPredictions));
-  }, [games]);
+    setPrediction(findPrediction(game, userPredictions));
+  }, [game]);
 
   if (!game) {
     return <LoadingIndicator />;
@@ -94,7 +76,9 @@ const UpcomingGame = (props: UpcomingGameProps) => {
               {game.homeGoals} - {game.awayGoals}
             </p>
           )}
-          <p className="text-md text-center">{date}</p>
+          <p className="text-md text-center">
+            {moment(game.date).format("dddd DD/MM, HH:mm")}
+          </p>
           {prediction && (
             <p className="text-sm italic text-center">
               Prediction: ({prediction.homeGoals} - {prediction.awayGoals})
@@ -120,7 +104,9 @@ const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
       games
         ? games
             .filter((g) =>
-              moment(g.date).isAfter(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))
+              moment(g.date).isAfter(
+                moment().subtract(FINISHED_TIMER_MINUTES, "minutes")
+              )
             )
             .sort((a, b) => a.date.localeCompare(b.date))
         : [],
@@ -132,9 +118,11 @@ const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
       games
         ? games
             .filter((g) =>
-              moment(g.date).isBefore(moment().subtract(FINISHED_TIMER_MINUTES, "minutes"))
+              moment(g.date).isBefore(
+                moment().subtract(FINISHED_TIMER_MINUTES, "minutes")
+              )
             )
-            .sort((a, b) => a.date.localeCompare(b.date))
+            .sort((a, b) => b.date.localeCompare(a.date))
         : [],
     [games]
   );
@@ -153,17 +141,40 @@ const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-400/40 w-72 lg:w-fit py-3 rounded-3xl font-novaMono">
-      <p className="font-bold text-2xl text-center mb-2">Upcoming:</p>
-      <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
-        {unfinishedGames
-          .slice(
-            0,
-            unfinishedGames.length > numberOfGames ? numberOfGames : undefined
-          )
-          .map((g, i) => (
-            <UpcomingGame games={games} offset={i} key={g.id} />
-          ))}
-      </div>
+      {finishedGames.length > 0 && (
+        <>
+          <p className="font-bold text-2xl text-center mb-2">Played:</p>
+          <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
+            {finishedGames
+              .slice(
+                0,
+                finishedGames.length > numberOfGames
+                  ? numberOfGames
+                  : undefined
+              )
+              .map((g, i) => (
+                <UpcomingGame game={g} key={i} />
+              ))}
+          </div>
+        </>
+      )}
+      {unfinishedGames.length > 0 && (
+        <>
+          <p className="font-bold text-2xl text-center mb-2">Upcoming:</p>
+          <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
+            {unfinishedGames
+              .slice(
+                0,
+                unfinishedGames.length > numberOfGames
+                  ? numberOfGames
+                  : undefined
+              )
+              .map((g, i) => (
+                <UpcomingGame game={g} key={i} />
+              ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
