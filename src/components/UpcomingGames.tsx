@@ -90,7 +90,7 @@ const UpcomingGame = (props: UpcomingGameProps) => {
   );
 };
 
-const FINISHED_TIMER_MINUTES = 300;
+const FINISHED_TIMER_MINUTES = 165;
 const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
   // const { height, width } = useWindowDimensions();
   const {
