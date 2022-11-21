@@ -56,18 +56,18 @@ const UpcomingGame = (props: UpcomingGameProps) => {
 
   return (
     <Link to={`/game/${game.id}`}>
-      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-2">
+      <div className="flex flex-col items-center justify-center font-novaMono space-y-2 hover:bg-gray-700/70 rounded-xl transition-all p-3">
         <div className="flex flex-row gap-4 justify-center items-center">
           <TeamFlag
             team={game.homeTeam}
-            width={"3.5rem"}
-            className="rounded-md h-16"
+            width={"4.5rem"}
+            className="rounded-md"
           />
           <p className="font-bold text-3xl">vs</p>
           <TeamFlag
             team={game.awayTeam}
-            width={"3.5rem"}
-            className="rounded-md h-16"
+            width={"4.5rem"}
+            className="rounded-md"
           />
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -148,9 +148,7 @@ const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
             {finishedGames
               .slice(
                 0,
-                finishedGames.length > numberOfGames
-                  ? numberOfGames
-                  : undefined
+                finishedGames.length > numberOfGames ? numberOfGames : undefined
               )
               .map((g, i) => (
                 <UpcomingGame game={g} key={i} />
@@ -160,7 +158,7 @@ const UpcomingGames = ({ numberOfGames }: { numberOfGames: number }) => {
       )}
       {unfinishedGames.length > 0 && (
         <>
-          <p className="font-bold text-2xl text-center mb-2">Upcoming:</p>
+          <p className="font-bold text-2xl text-center mb-2 mt-4">Upcoming:</p>
           <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:px-4">
             {unfinishedGames
               .slice(
