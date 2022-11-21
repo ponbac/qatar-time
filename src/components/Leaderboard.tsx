@@ -61,8 +61,6 @@ type PlayerListProps = {
 const PlayerList = (props: PlayerListProps) => {
   const { players } = props;
 
-  console.log(players);
-
   const filteredPlayers = useMemo(() => {
     return players
       .filter((player) => (player.predictions ? true : false))

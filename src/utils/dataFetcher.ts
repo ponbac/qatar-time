@@ -111,7 +111,7 @@ const insertTeam = async (team: Team): Promise<any> => {
   }
 
   return data;
-}
+};
 
 // const useGames = (): {
 //   games: Game[] | undefined;
@@ -174,7 +174,7 @@ const insertGame = async (game: DBGame): Promise<any> => {
   }
 
   return data;
-}
+};
 
 const getCurrentUser = (): User | null => {
   const user = SUPABASE.auth.user();
@@ -212,7 +212,11 @@ const fetchAllUsers = async (): Promise<any> => {
 
   let parsedUsers = data.map((user) => {
     if (user.predictions != null) {
-      user.predictions = JSON.parse(user.predictions);
+      try {
+        user.predictions = JSON.parse(user.predictions);
+      } catch (e) {
+        console.error(`Error parsing predictions for user ${user.name}: ${e}`);
+      }
     }
     return user;
   });
