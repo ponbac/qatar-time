@@ -1,64 +1,65 @@
 type Group = {
-  id: string;
-  teams: Team[];
-  games: Game[];
+	id: string;
+	teams: Team[];
+	games: Game[];
 };
 
 type GroupResult = {
-  id: string;
-  results: number[];
+	id: string;
+	results: number[];
 };
 
 type Team = {
-  id: number;
-  name: string;
-  flagCode: string;
-  groupId: string;
-  points: number;
+	id: number;
+	name: string;
+	flagCode: string;
+	groupId: string;
+	points: number;
 };
 
 type Game = {
-  id: number;
-  finished: boolean;
-  homeTeam: Team;
-  awayTeam: Team;
-  homeGoals: number;
-  awayGoals: number;
-  date: string;
-  groupId: string;
-  winner: number;
+	id: number;
+	finished: boolean;
+	homeTeam: Team;
+	awayTeam: Team;
+	homeGoals: number;
+	awayGoals: number;
+	date: string;
+	groupId: string;
+	winner: number;
 };
 
 type DBGame = {
-  id: number;
-  finished: boolean;
-  homeTeam: number;
-  awayTeam: number;
-  homeGoals: number;
-  awayGoals: number;
-  date: string;
-  groupId: string;
-  winner: number | null;
+	id: number;
+	finished: boolean;
+	homeTeam: number;
+	awayTeam: number;
+	homeGoals: number;
+	awayGoals: number;
+	date: string;
+	groupId: string;
+	winner: number | null;
 };
 
 type PlayerUser = {
-  id: string;
-  name: string;
-  description: string;
-  avatar: string;
-  score: number;
-  predictions: GroupPrediction[];
+	id: string;
+	name: string;
+	description: string;
+	avatar: string;
+	score: number;
+	money: boolean;
+	predictions: GroupPrediction[];
 };
 
 type GamePrediction = {
-  id: number;
-  homeGoals: number;
-  awayGoals: number;
-  winner: number;
+	id: number;
+	homeGoals: number;
+	awayGoals: number;
+	winner: number;
 };
 
 type GroupPrediction = {
-  groupId: string;
-  games: GamePrediction[];
-  result: Team[4];
+	groupId: string;
+	games: GamePrediction[];
+	result: Team[4];
 };
