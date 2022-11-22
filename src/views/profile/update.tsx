@@ -41,6 +41,7 @@ const UpdateProfile: FC<{}> = () => {
         "https://avatars.dicebear.com/api/big-ears-neutral/Bakuman.svg",
       score: user?.score ?? 0,
       predictions: user?.predictions ?? [],
+      money: user?.money ?? false,
     };
 
     updateUserData(
