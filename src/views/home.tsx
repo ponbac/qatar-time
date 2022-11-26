@@ -14,10 +14,10 @@ const PricePool = () => {
       <h1 className={"text-4xl font-bold"}>🏆</h1>
       <div>
         <div className="flex flex-row gap-2">
-          <p className="text-2xl font-bold text-ellipsis overflow-hidden">
+          <p className="text-lg md:text-2xl font-bold text-ellipsis overflow-hidden">
             Prispengar:
           </p>
-          <p className="text-2xl font-bold text-ellipsis overflow-hidden">
+          <p className="text-lg md:text-2xl font-bold text-ellipsis overflow-hidden">
             {players?.reduce(
               (acc: number, player: PlayerUser) =>
                 acc + (player.money ? 200 : 0),
@@ -26,7 +26,7 @@ const PricePool = () => {
             {" SEK"}
           </p>
         </div>
-        <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
+        <p className="text-xs md:text-sm text-gray-400 text-ellipsis">
           Swisha 200 kr till 070-576 56 77 för att tävla!
         </p>
       </div>
