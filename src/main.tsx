@@ -19,6 +19,7 @@ import { PLAYOFF_PREDICTIONS_OPEN } from "./utils/constants";
 import PredictPlayoffs from "./views/predict/playoffs";
 import moment from "moment";
 import AdminView from "./views/admin";
+import Standings from "./views/standings/standings";
 
 export const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               />
               <Route path="predict/group/:id" element={<GroupBlock />} />
               <Route path="schedule" element={<Schedule />} />
+              <Route path="standings" element={<Standings />} />
               <Route path="halloffame" element={<HallOfFame />} />
               <Route path="admin" element={<AdminView />} />
             </Routes>

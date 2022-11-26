@@ -1,8 +1,10 @@
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, signedIn } from "../../features/auth/authSlice";
-import { updateUserData } from "../../utils/dataFetcher";
+import { selectUser, signedIn, signedOut } from "../../features/auth/authSlice";
+import { SUPABASE, updateUserData } from "../../utils/dataFetcher";
 
 const UpdateProfile: FC<{}> = () => {
   const user = useSelector(selectUser);
@@ -54,6 +56,12 @@ const UpdateProfile: FC<{}> = () => {
     dispatch(signedIn(updatedUser));
     setAvatarEditMode(false);
   };
+
+  async function signOut() {
+    const { error } = await SUPABASE.auth.signOut();
+
+    dispatch(signedOut());
+  }
 
   const avatarElement = (user: PlayerUser) => {
     const avatarImage = (
@@ -127,7 +135,7 @@ const UpdateProfile: FC<{}> = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col items-center justify-center font-novaMono bg-gray-500/70 backdrop-blur-sm rounded-xl p-10 w-80 h-80 overflow-hidden">
+      <div className="flex flex-col items-center justify-center font-novaMono bg-gray-500/70 backdrop-blur-sm rounded-xl p-10 w-80 h-96 overflow-hidden">
         {avatarElement(user)}
         <div className="my-4">
           <h1
@@ -149,6 +157,16 @@ const UpdateProfile: FC<{}> = () => {
           <div className="hover:cursor-pointer text-center bg-gradient-to-r from-primary to-secondary text-white transition-all w-32 hover:w-36 hover:text-gray-400 p-2 rounded-xl font-bold">
             Save
           </div>
+        </button>
+        <button
+          onClick={() => signOut}
+          className="flex flex-col items-center hover:cursor-pointer hover:text-blue-300 mt-4 hover:underline"
+        >
+          <FontAwesomeIcon
+            icon={faArrowRightFromBracket}
+            className="text-xl p-1"
+          />
+          <p className="text-xs font-novaMono font-bold">Log out</p>
         </button>
       </div>
     </motion.div>
