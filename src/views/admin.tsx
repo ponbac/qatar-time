@@ -2,12 +2,68 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { selectIsAdmin } from "../features/auth/authSlice";
 import {
+  fetchAllUsers,
   fetchGames,
   fetchTeams,
   insertGame,
   insertTeam,
+  updateUserData,
 } from "../utils/dataFetcher";
 import { useAppSelector } from "../utils/store";
+
+const AddPayment = () => {
+  const {
+    data: players,
+    isLoading,
+    refetch,
+  } = useQuery<PlayerUser[]>("users", fetchAllUsers);
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerUser>();
+
+  if (!players || isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="p-3 bg-gray-600/80 rounded-lg w-96 text-center space-y-2 flex flex-col items-center justify-center">
+      <h1 className="font-bold">Flos on the line</h1>
+      <select
+        className="px-2 py-[0.1rem] text-black rounded-md outline-none"
+        value={selectedPlayer?.id ?? ""}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          setSelectedPlayer(players?.find((p) => p.id === e.target.value))
+        }
+      >
+        {players.map((player) => (
+          <option key={player.id} value={player.id}>
+            {player.name}
+          </option>
+        ))}
+      </select>
+      <button
+        className={`${
+          selectedPlayer?.money
+            ? "bg-red-600/60 hover:bg-red-500"
+            : "bg-green-600/60 hover:bg-green-500"
+        }  text-white font-bold px-4 py-1 rounded-full transition-all`}
+        onClick={() => {
+          updateUserData(
+            selectedPlayer?.id ?? "",
+            selectedPlayer?.name ?? "",
+            selectedPlayer?.avatar ?? "",
+            selectedPlayer?.description ?? "",
+            selectedPlayer?.money ? false : true
+          ).then(() =>
+            refetch().then(() => {
+              setSelectedPlayer(undefined);
+            })
+          );
+        }}
+      >
+        {selectedPlayer?.money ? "Has not paid" : "Has paid"}
+      </button>
+    </div>
+  );
+};
 
 type AdminInputProps = {
   value: string;
@@ -189,6 +245,7 @@ const AdminView = () => {
       <h1 className="font-bold text-4xl">Admin View</h1>
       <AddGame />
       <AddTeam />
+      <AddPayment />
     </div>
   );
 };

@@ -228,10 +228,20 @@ const updateUserData = async (
   userId: string,
   name: string,
   avatar: string,
-  description: string
+  description: string,
+  money?: boolean
 ): Promise<any> => {
+  let updateObject: any = {
+    name: name,
+    avatar: avatar,
+    description: description,
+  };
+  if (money !== undefined) {
+    updateObject = { ...updateObject, money: money };
+  }
+
   const { data, error } = await SUPABASE.from("users")
-    .update({ name: name, avatar: avatar, description: description })
+    .update(updateObject)
     .match({ id: userId });
 
   if (error) {
