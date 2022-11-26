@@ -71,7 +71,8 @@ const fetchGroup = async (groupId: string): Promise<Group> => {
     homeTeam: homeTeam ( id, name, flagCode, groupId ),
     awayTeam: awayTeam ( id, name, flagCode, groupId ),
     date,
-    groupId
+    groupId,
+    winner
     `
     )
     .eq("groupId", groupId.toUpperCase());

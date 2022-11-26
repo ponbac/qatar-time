@@ -11,6 +11,7 @@ import {
   faDice,
   faHouse,
   faTrophy,
+  faArrowUp19,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -18,6 +19,7 @@ enum MenuItem {
   Home,
   Predict,
   Schedule,
+  Standings,
   HallOfFame,
   NONE,
 }
@@ -53,6 +55,9 @@ const Navbar: FC<{}> = ({}) => {
         break;
       case "/schedule":
         setActiveItem(MenuItem.Schedule);
+        break;
+      case "/standings":
+        setActiveItem(MenuItem.Standings);
         break;
       case "/halloffame":
         setActiveItem(MenuItem.HallOfFame);
@@ -121,21 +126,17 @@ const Navbar: FC<{}> = ({}) => {
             text="Schedule"
           />
           <MobileLinkIcon
+            to="/standings"
+            icon={faArrowUp19}
+            menuItem={MenuItem.Standings}
+            text="Standings"
+          />
+          <MobileLinkIcon
             to="/halloffame"
             icon={faTrophy}
             menuItem={MenuItem.HallOfFame}
             text="HoF"
           />
-          <button
-            onClick={handleSignOutClick}
-            className="flex flex-col items-center hover:cursor-pointer hover:text-blue-300"
-          >
-            <FontAwesomeIcon
-              icon={faArrowRightFromBracket}
-              className="text-xl p-1"
-            />
-            <p className="text-xs font-novaMono font-bold">Exit</p>
-          </button>
         </div>
       </div>
     );
@@ -198,6 +199,12 @@ const Navbar: FC<{}> = ({}) => {
         icon={faCalendar}
         menuItem={MenuItem.Schedule}
         text="Schedule"
+      />
+      <DesktopLinkIcon
+        to="/standings"
+        icon={faArrowUp19}
+        menuItem={MenuItem.Standings}
+        text="Standings"
       />
       <DesktopLinkIcon
         to="/halloffame"
