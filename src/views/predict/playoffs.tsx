@@ -10,11 +10,12 @@ import {
 import { PLAYOFF_PREDICTIONS_CLOSE } from "../../utils/constants";
 import { fetchGames } from "../../utils/dataFetcher";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
-import { calcSemifinals, calcFinal } from "../../utils/utils";
+import { calcSemifinals, calcFinal, calcQuarters } from "../../utils/utils";
 import { GameBlock } from "./[groupId]";
 
 const PredictPlayoffs = () => {
   const { data: games, isLoading, error } = useQuery("games", fetchGames);
+  const [eights, setEights] = useState<Game[]>([]);
   const [quarters, setQuarters] = useState<Game[]>([]);
   const [semis, setSemis] = useState<Game[]>([]);
   const [final, setFinal] = useState<Game[]>([]);
@@ -30,11 +31,12 @@ const PredictPlayoffs = () => {
     }
 
     if (games) {
-      setQuarters(
+      setEights(
         games
-          .filter((game) => game.groupId === "QUARTERS")
+          .filter((game) => game.groupId === "EIGHTS")
           .sort((a, b) => a.date.localeCompare(b.date))
       );
+      setQuarters(calcQuarters(eights, predictions));
       setSemis(calcSemifinals(quarters, predictions));
       setFinal(calcFinal(semis, predictions));
     }
@@ -64,15 +66,24 @@ const PredictPlayoffs = () => {
         Playoffs
       </h1>
       <h2 className=" text-lg px-2 text-center font-bold">
-        Correct winner grants 6 points in quarters, 8 points in semis and 10
-        points in the final. <br /> +3 for correct score. <br />{" "}
+        Correct winner grants 4 points in round of 16, 6 points in quarters, 8
+        points in semis and 10 points in the final. <br /> +2 for correct score.{" "}
+        <br />{" "}
         <span className="italic text-base">
           (Score includes potential goals scored after ordinary game time, e.g.
           penalty shoot-out)
         </span>
       </h2>
+      {eights.length > 0 && (
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <h2 className="text-4xl font-bold mb-4">Round of 16</h2>
+          {eights.map((game) => (
+            <GameBlock game={game} />
+          ))}
+        </div>
+      )}
       {quarters.length > 0 && (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center space-y-2">
           <h2 className="text-4xl font-bold mb-4">Quarters</h2>
           {quarters.map((game) => (
             <GameBlock game={game} />
@@ -81,7 +92,7 @@ const PredictPlayoffs = () => {
       )}
       {semis.length > 0 && (
         <motion.div
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center space-y-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -94,7 +105,7 @@ const PredictPlayoffs = () => {
       )}
       {final.length > 0 && (
         <motion.div
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center space-y-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
