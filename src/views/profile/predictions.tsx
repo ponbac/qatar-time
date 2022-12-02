@@ -73,6 +73,8 @@ const PredictedGames = (props: PredictedGamesProps) => {
   const parseName = (groupName: string) => {
     if (groupName.length == 1) {
       return "Group " + groupName;
+    } else if (groupName == "EIGHTS") {
+      return "Round of 16";
     } else if (groupName == "QUARTERS") {
       return "Quarterfinals";
     } else if (groupName == "SEMIS") {

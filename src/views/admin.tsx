@@ -114,11 +114,17 @@ const AddGame = () => {
           );
         }}
       >
-        {props.teams.map((team) => (
-          <option key={team.id} value={team.id}>
-            {team.name}
-          </option>
-        ))}
+        {props.teams
+          .map((team) => (
+            <option key={team.id} value={team.id}>
+              {team.name}
+            </option>
+          ))
+          .concat(
+            <option key="none" value="">
+              None
+            </option>
+          )}
       </select>
     );
   };

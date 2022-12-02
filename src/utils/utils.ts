@@ -222,11 +222,6 @@ export const calcSemifinals = (
         ? quarters[3].homeTeam
         : quarters[3].awayTeam;
 
-    console.log("One: " + teamOne.name);
-    console.log("Two: " + teamTwo.name);
-    console.log("Three: " + teamThree.name);
-    console.log("Four: " + teamFour.name);
-
     const semifinalOne: Game = {
       id: quarters[3].id + 1,
       date: "2022-07-26T21:00:00",
