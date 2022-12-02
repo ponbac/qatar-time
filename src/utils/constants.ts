@@ -7,8 +7,8 @@ export const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 // TODO: This is a hack, but it works for now (should be server-side).
 export const GROUP_PREDICTIONS_CLOSE = "2022-11-20T16:45:00";
-export const PLAYOFF_PREDICTIONS_OPEN = "2022-11-29T22:00:00";
-export const PLAYOFF_PREDICTIONS_CLOSE = "2022-12-03T15:00:00";
+export const PLAYOFF_PREDICTIONS_OPEN = "2022-12-02T21:45:00";
+export const PLAYOFF_PREDICTIONS_CLOSE = "2022-12-03T15:30:00";
 
 export const ADMIN_ID = "ecf31a6f-9403-4276-afd8-f83ffabc9f01";
 
