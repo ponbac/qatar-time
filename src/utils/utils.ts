@@ -133,7 +133,7 @@ export const calcQuarters = (
         id: eights[7].id + 1,
         date: "2022-07-26T21:00:00",
         homeTeam: teamOne,
-        awayTeam: teamTwo,
+        awayTeam: teamThree,
         homeGoals: 0,
         awayGoals: 0,
         finished: false,
@@ -143,8 +143,8 @@ export const calcQuarters = (
       {
         id: eights[7].id + 2,
         date: "2022-07-27T21:00:00",
-        homeTeam: teamThree,
-        awayTeam: teamFour,
+        homeTeam: teamFive,
+        awayTeam: teamSix,
         homeGoals: 0,
         awayGoals: 0,
         finished: false,
@@ -154,8 +154,8 @@ export const calcQuarters = (
       {
         id: eights[7].id + 3,
         date: "2022-07-28T21:00:00",
-        homeTeam: teamFive,
-        awayTeam: teamSix,
+        homeTeam: teamFour,
+        awayTeam: teamTwo,
         homeGoals: 0,
         awayGoals: 0,
         finished: false,
@@ -222,11 +222,16 @@ export const calcSemifinals = (
         ? quarters[3].homeTeam
         : quarters[3].awayTeam;
 
+    console.log("One: " + teamOne.name);
+    console.log("Two: " + teamTwo.name);
+    console.log("Three: " + teamThree.name);
+    console.log("Four: " + teamFour.name);
+
     const semifinalOne: Game = {
       id: quarters[3].id + 1,
       date: "2022-07-26T21:00:00",
       homeTeam: teamOne,
-      awayTeam: teamTwo,
+      awayTeam: teamThree,
       homeGoals: 0,
       awayGoals: 0,
       finished: false,
@@ -236,7 +241,7 @@ export const calcSemifinals = (
     const semifinalTwo: Game = {
       id: quarters[3].id + 2,
       date: "2022-07-27T21:00:00",
-      homeTeam: teamThree,
+      homeTeam: teamTwo,
       awayTeam: teamFour,
       homeGoals: 0,
       awayGoals: 0,
