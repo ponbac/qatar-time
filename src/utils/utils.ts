@@ -128,10 +128,20 @@ export const calcQuarters = (
         ? eights[7].homeTeam
         : eights[7].awayTeam;
 
+    console.log("teamOne", teamOne.name);
+    console.log("teamTwo", teamTwo.name);
+    console.log("teamThree", teamThree.name);
+    console.log("teamFour", teamFour.name);
+    console.log("teamFive", teamFive.name);
+    console.log("teamSix", teamSix.name);
+    console.log("teamSeven", teamSeven.name);
+    console.log("teamEight", teamEight.name);
+
+    const maxId = eights.reduce((max, p) => (p.id > max ? p.id : max), 0);
     const quarters: Game[] = [
       {
-        id: eights[7].id + 1,
-        date: "2022-07-26T21:00:00",
+        id: maxId + 1,
+        date: "2022-12-09T20:00:00",
         homeTeam: teamOne,
         awayTeam: teamThree,
         homeGoals: 0,
@@ -141,8 +151,8 @@ export const calcQuarters = (
         groupId: "QUARTERS",
       },
       {
-        id: eights[7].id + 2,
-        date: "2022-07-27T21:00:00",
+        id: maxId + 2,
+        date: "2022-12-09T16:00:00",
         homeTeam: teamFive,
         awayTeam: teamSix,
         homeGoals: 0,
@@ -152,8 +162,8 @@ export const calcQuarters = (
         groupId: "QUARTERS",
       },
       {
-        id: eights[7].id + 3,
-        date: "2022-07-28T21:00:00",
+        id: maxId + 3,
+        date: "2022-12-10T20:00:00",
         homeTeam: teamFour,
         awayTeam: teamTwo,
         homeGoals: 0,
@@ -163,8 +173,8 @@ export const calcQuarters = (
         groupId: "QUARTERS",
       },
       {
-        id: eights[7].id + 4,
-        date: "2022-07-29T21:00:00",
+        id: maxId + 4,
+        date: "2022-12-10T16:00:00",
         homeTeam: teamSeven,
         awayTeam: teamEight,
         homeGoals: 0,
@@ -222,9 +232,10 @@ export const calcSemifinals = (
         ? quarters[3].homeTeam
         : quarters[3].awayTeam;
 
+    const maxId = quarters.reduce((max, p) => (p.id > max ? p.id : max), 0);
     const semifinalOne: Game = {
-      id: quarters[3].id + 1,
-      date: "2022-07-26T21:00:00",
+      id: maxId + 1,
+      date: "2022-12-13T20:00:00",
       homeTeam: teamOne,
       awayTeam: teamThree,
       homeGoals: 0,
@@ -234,8 +245,8 @@ export const calcSemifinals = (
       groupId: "SEMIS",
     };
     const semifinalTwo: Game = {
-      id: quarters[3].id + 2,
-      date: "2022-07-27T21:00:00",
+      id: maxId + 2,
+      date: "2022-12-14T20:00:00",
       homeTeam: teamTwo,
       awayTeam: teamFour,
       homeGoals: 0,
@@ -269,9 +280,10 @@ export const calcFinal = (semis: Game[], predictions: GroupPrediction[]) => {
         ? semis[1].homeTeam
         : semis[1].awayTeam;
 
+    const maxId = semis.reduce((max, p) => (p.id > max ? p.id : max), 0);
     const final: Game = {
-      id: semis[1].id + 1,
-      date: "2022-07-31T18:00:00",
+      id: maxId + 1,
+      date: "2022-12-18T16:00:00",
       homeTeam: teamOne,
       awayTeam: teamTwo,
       homeGoals: 0,
