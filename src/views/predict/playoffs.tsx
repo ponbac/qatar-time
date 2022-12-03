@@ -62,9 +62,16 @@ const PredictPlayoffs = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-center text-7xl font-bold font-novaMono pb-3 pt-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-        Playoffs
-      </h1>
+      <div className="flex flex-row gap-4 justify-center items-center">
+        <h1 className="text-center text-7xl font-bold font-novaMono pb-3 pt-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+          Playoffs
+        </h1>
+        <img
+          className="w-min mt-8"
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/199.gif"
+          alt="Gengar"
+        />
+      </div>
       <h2 className=" text-lg px-2 text-center font-bold">
         Correct winner grants 4 points in round of 16, 6 points in quarters, 8
         points in semis and 10 points in the final. <br /> +2 for correct score.{" "}
