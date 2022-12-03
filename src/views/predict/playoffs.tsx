@@ -42,6 +42,18 @@ const PredictPlayoffs = () => {
     }
   }, [games, predictions]);
 
+  useEffect(() => {
+    function checkTime() {
+      const currentTime = moment();
+      if (currentTime.isAfter(PLAYOFF_PREDICTIONS_CLOSE)) {
+        setPredictionsClosed(true);
+      }
+    }
+
+    const interval = setInterval(checkTime, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   if (predictionsClosed) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen text-center px-3">
