@@ -25,7 +25,12 @@ const PlayerItem = (props: PlayerItemProps) => {
     }
   };
 
-  const hasPlayoffPredictions = player.predictions?.length == 12;
+  const hasPlayoffPredictions =
+    player.predictions?.length == 12 &&
+    player.predictions[8].games.length == 8 &&
+    player.predictions[9].games.length == 4 &&
+    player.predictions[10].games.length == 2 &&
+    player.predictions[11].games.length == 1;
 
   return (
     <Link to={`/profile/${player.id}`}>
