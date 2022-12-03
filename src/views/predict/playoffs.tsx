@@ -96,17 +96,21 @@ const PredictPlayoffs = () => {
       {eights.length > 0 && (
         <div className="flex flex-col items-center justify-center space-y-2">
           <h2 className="text-4xl font-bold mb-4">Round of 16</h2>
-          {eights.map((game) => (
-            <GameBlock game={game} />
-          ))}
+          <div className="flex flex-col space-y-10 md:space-y-2">
+            {eights.map((game) => (
+              <GameBlock game={game} />
+            ))}
+          </div>
         </div>
       )}
       {quarters.length > 0 && (
         <div className="flex flex-col items-center justify-center space-y-2">
           <h2 className="text-4xl font-bold mb-4">Quarters</h2>
-          {quarters.map((game) => (
-            <GameBlock game={game} />
-          ))}
+          <div className="flex flex-col space-y-10 md:space-y-2">
+            {quarters.map((game) => (
+              <GameBlock game={game} />
+            ))}
+          </div>
         </div>
       )}
       {semis.length > 0 && (
@@ -117,9 +121,11 @@ const PredictPlayoffs = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-4xl font-bold mb-4">Semis</h2>
-          {semis.map((game) => (
-            <GameBlock game={game} />
-          ))}
+          <div className="flex flex-col space-y-10 md:space-y-2">
+            {semis.map((game) => (
+              <GameBlock game={game} />
+            ))}
+          </div>
         </motion.div>
       )}
       {final.length > 0 && (
