@@ -257,7 +257,6 @@ const updateUserPredictions = async (
   predictions: GroupPrediction[]
 ): Promise<any> => {
   const predictionsJson = JSON.stringify(predictions);
-  //console.log(predictionsJson);
 
   const { data, error } = await SUPABASE.from("users")
     .update({ predictions: predictionsJson })
@@ -305,7 +304,6 @@ const fetchPredictions = async (userId: string): Promise<GroupPrediction[]> => {
   }
 
   const parsedPredictions = JSON.parse(data[0].predictions);
-  console.log(parsedPredictions);
 
   return parsedPredictions;
 };

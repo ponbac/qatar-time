@@ -128,15 +128,6 @@ export const calcQuarters = (
         ? eights[7].homeTeam
         : eights[7].awayTeam;
 
-    console.log("teamOne", teamOne.name);
-    console.log("teamTwo", teamTwo.name);
-    console.log("teamThree", teamThree.name);
-    console.log("teamFour", teamFour.name);
-    console.log("teamFive", teamFive.name);
-    console.log("teamSix", teamSix.name);
-    console.log("teamSeven", teamSeven.name);
-    console.log("teamEight", teamEight.name);
-
     const maxId = eights.reduce((max, p) => (p.id > max ? p.id : max), 0);
     const quarters: Game[] = [
       {

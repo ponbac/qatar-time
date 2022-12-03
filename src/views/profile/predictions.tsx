@@ -207,11 +207,6 @@ const PredictedGames = (props: PredictedGamesProps) => {
     );
   };
 
-  console.log(
-    "Predicted games",
-    predictedGames.sort((a, b) => a.date.localeCompare(b.date))
-  );
-
   return (
     <div className="flex flex-col items-center">
       <div className="py-2 space-y-5">

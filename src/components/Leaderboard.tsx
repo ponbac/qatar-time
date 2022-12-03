@@ -43,7 +43,8 @@ const PlayerItem = (props: PlayerItemProps) => {
         />
         <div className="flex-1 lg:w-72 overflow-hidden">
           <h1 className="text-xl font-bold text-ellipsis overflow-hidden">
-            {player.name ?? "Unknown"}{player.money ? "    💵" : "    🍜"}
+            {player.name ?? "Unknown"}
+            {player.money ? "    💵" : "    🍜"}
           </h1>
           <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
             {player.description ?? "Who might this be!?"}
@@ -66,8 +67,6 @@ const PlayerList = (props: PlayerListProps) => {
       .filter((player) => (player.predictions ? true : false))
       .sort((a, b) => b.score - a.score);
   }, [players]);
-
-  console.log(filteredPlayers);
 
   return (
     <ul className="space-y-2">

@@ -23,12 +23,7 @@ const SignInButton: React.FC<{ provider: SignInProvider; text: string }> = ({
       }
     );
 
-    console.log(user);
-    console.log(session);
-    console.log(error);
-
     if (user) {
-      console.log(user);
       dispatch(login(user));
     }
   }
@@ -90,7 +85,6 @@ const SessionInfoButton: React.FC<{}> = ({}) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     updateMetadata();
-    console.log(SUPABASE.auth.user());
   };
 
   return <button onClick={handleClick}>Session Info!</button>;
