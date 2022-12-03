@@ -25,9 +25,15 @@ const PlayerItem = (props: PlayerItemProps) => {
     }
   };
 
+  const hasPlayoffPredictions = player.predictions?.length == 12;
+
   return (
     <Link to={`/profile/${player.id}`}>
-      <div className="font-novaMono mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 bg-gray-400/40 backdrop-blur-sm py-2 px-6 rounded-lg">
+      <div
+        className={`font-novaMono mb-2 hover:cursor-pointer hover:bg-primary/40 transition-all mx-2 flex flex-row items-center gap-5 lg:gap-11 ${
+          hasPlayoffPredictions ? "bg-gray-400/40" : "bg-red-500/40"
+        } backdrop-blur-sm py-2 px-6 rounded-lg`}
+      >
         <h1 className={`text-4xl font-bold`}>
           <span className={rankColor(rank)}>{rank}</span>.
         </h1>
@@ -46,9 +52,15 @@ const PlayerItem = (props: PlayerItemProps) => {
             {player.name ?? "Unknown"}
             {player.money ? "    💵" : "    🍜"}
           </h1>
-          <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
-            {player.description ?? "Who might this be!?"}
-          </p>
+          {hasPlayoffPredictions ? (
+            <p className="text-sm text-gray-400 text-ellipsis overflow-hidden h-5">
+              {player.description ?? "Who might this be!?"}
+            </p>
+          ) : (
+            <h1 className="text-md text-red-500">
+              Playoff predictions missing!
+            </h1>
+          )}
         </div>
         <h1 className="text-3xl font-bold">{player.score}p</h1>
       </div>
