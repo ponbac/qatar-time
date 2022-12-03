@@ -148,7 +148,9 @@ const PredictedGames = (props: PredictedGamesProps) => {
     const resultPoints = () => {
       let points = 0;
       if (correctPrediction) {
-        if (playedGame?.groupId == "QUARTERS") {
+        if (playedGame?.groupId === "EIGHTS") {
+          points += 4;
+        } else if (playedGame?.groupId == "QUARTERS") {
           points = 6;
         } else if (playedGame?.groupId == "SEMIS") {
           points = 8;
@@ -160,7 +162,7 @@ const PredictedGames = (props: PredictedGamesProps) => {
 
         if (correctScore) {
           if ((playedGame?.groupId.length ?? 0) > 1) {
-            points += 3;
+            points += 2;
           } else {
             points += 1;
           }
@@ -205,7 +207,10 @@ const PredictedGames = (props: PredictedGamesProps) => {
     );
   };
 
-  console.log("Predicted games", predictedGames.sort((a, b) => a.date.localeCompare(b.date)));
+  console.log(
+    "Predicted games",
+    predictedGames.sort((a, b) => a.date.localeCompare(b.date))
+  );
 
   return (
     <div className="flex flex-col items-center">
