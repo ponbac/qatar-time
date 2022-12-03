@@ -149,7 +149,7 @@ const PredictedGames = (props: PredictedGamesProps) => {
       let points = 0;
       if (correctPrediction) {
         if (playedGame?.groupId === "EIGHTS") {
-          points += 4;
+          points = 4;
         } else if (playedGame?.groupId == "QUARTERS") {
           points = 6;
         } else if (playedGame?.groupId == "SEMIS") {
