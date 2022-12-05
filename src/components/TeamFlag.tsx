@@ -8,6 +8,10 @@ type TeamFlagProps = {
 const TeamFlag = (props: TeamFlagProps) => {
   const { team, width, className = undefined } = props;
 
+  if (team === null) {
+    return <></>;
+  }
+
   return (
     <img
       style={{ width: width }}
