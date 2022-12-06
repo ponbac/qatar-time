@@ -14,7 +14,7 @@ const TeamFlag = (props: TeamFlagProps) => {
       : team.flagCode.length < 7
       ? `https://flagicons.lipis.dev/flags/4x3/${team.flagCode}.svg`
       : `/images/team-logos/${team.flagCode}.svg`
-    : "aq";
+    : "https://flagicons.lipis.dev/flags/4x3/aq.svg";
 
   return (
     <img
