@@ -11,7 +11,7 @@ import { TeamBlock } from "../predict/[groupId]";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import { useQuery } from "react-query";
 import { TBD_TEAM } from "../../utils/constants";
-import { calcFinal, calcSemifinals } from "../../utils/utils";
+import { calcFinal, calcQuarters, calcSemifinals } from "../../utils/utils";
 import CollapsibleContainer from "../../components/CollapsibleContainer";
 
 type PredictedGroupProps = {
@@ -87,9 +87,10 @@ const PredictedGames = (props: PredictedGamesProps) => {
   // Calculates semis and final based on quarters predictions
   useEffect(() => {
     if (games) {
-      const quarters = games
-        .filter((game) => game.groupId === "QUARTERS")
-        .sort((a, b) => a.date.localeCompare(b.date));
+      const eights =  games
+      .filter((game) => game.groupId === "EIGHTS")
+      .sort((a, b) => a.date.localeCompare(b.date))
+      const quarters = calcQuarters(eights, predictions);
       const semis = calcSemifinals(quarters, predictions);
       const final = calcFinal(semis, predictions);
 
